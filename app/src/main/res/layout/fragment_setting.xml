@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    android:padding="20dp">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LiveScore"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Hàng nút Login & Join Now -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:backgroundTint="@color/gray"
+            android:textColor="@android:color/black"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnJoinNow"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Join now"
+            android:backgroundTint="@color/gray"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+    <!-- Nút Notifications -->
+    <Button
+        android:id="@+id/btnNotifications"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Notifications"
+        android:backgroundTint="@color/gray"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp" />
+
+    <!-- Nút Background color -->
+    <Button
+        android:id="@+id/btnChangeColor"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Background color"
+        android:backgroundTint="@color/gray"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp" />
+
+    <!-- Chữ Follow Us -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FOLLOW US"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Icon mạng xã hội -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/facebook_ic"
+            android:layout_marginEnd="8dp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ins_ic"
+            android:layout_marginEnd="8dp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/x_ic"/>
+    </LinearLayout>
+
+    <!-- Nút Logout -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Log out"
+        android:backgroundTint="@color/gray"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>

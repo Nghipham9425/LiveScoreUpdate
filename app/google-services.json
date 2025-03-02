@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "693269578791",
+    "project_id": "footballapp-9e513",
+    "storage_bucket": "footballapp-9e513.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693269578791:android:b24555c8c13fc00775fa02",
+        "android_client_info": {
+          "package_name": "com.sinhvien.livescore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0kv4ecz1fjkyiJOitowtD7OHIaxs2Wow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
