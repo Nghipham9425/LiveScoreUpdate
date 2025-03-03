@@ -1,29 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/white"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="@color/white">
 
-    <!-- Tiêu đề -->
+    <!-- Chào mừng người dùng -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:text="LiveScore"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:layout_marginBottom="20dp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvHelloUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Hello, User!"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <!-- Hàng nút Login & Join Now -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
         <Button
             android:id="@+id/btnLogin"
@@ -53,15 +61,30 @@
         android:textColor="@android:color/black"
         android:layout_marginTop="16dp" />
 
-    <!-- Nút Background color -->
-    <Button
-        android:id="@+id/btnChangeColor"
+    <!-- Nút Change Mode (Background color or Dark/Light Mode) với logo bên cạnh -->
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Background color"
-        android:backgroundTint="@color/gray"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnChangeColor"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="Change Background"
+            android:textColor="@android:color/black"
+            android:layout_marginEnd="10dp" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/light_ic"
+            android:contentDescription="Sun Icon"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
 
     <!-- Chữ Follow Us -->
     <TextView
@@ -84,19 +107,22 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/facebook_ic"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/facebook_ic" />
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ins_ic"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ins_ic" />
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/x_ic"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/x_ic" />
     </LinearLayout>
 
     <!-- Nút Logout -->
@@ -108,5 +134,4 @@
         android:backgroundTint="@color/gray"
         android:textColor="@android:color/black"
         android:layout_marginTop="16dp"/>
-
 </LinearLayout>

@@ -1,6 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Màu chung -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#D3D3D3</color> <!-- Màu xám nhạt -->
+    <color name="primary">#FF5722</color> <!-- Màu cam đẹp -->
+    <color name="background">#F5F5F5</color>
+    <color name="light_gray">#F5F5F5</color> <!-- Màu xám nhạt -->
+
+
+
+    <color name="colorPrimaryLight">#6200EE</color>
+    <color name="colorPrimaryDarkLight">#3700B3</color>  <!-- Màu tối khi ở chế độ sáng -->
+    <color name="colorAccentLight">#03DAC5</color> <!-- Màu phụ sáng -->
+
+    <!-- Màu cho chế độ tối -->
+    <color name="colorPrimaryDarkDark">#BB86FC</color>
+    <color name="colorPrimaryDarkDarker">#121212</color>
+    <color name="colorAccentDark">#FF4081</color>
+
+    <!-- Màu nền sáng -->
+    <color name="colorBackground">#FFFFFF</color>
 </resources>

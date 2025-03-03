@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,10 +24,11 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
-    private static final String API_URL = "https://api.football-data.org/v4/competitions/PL/matches";
     private static final String API_TOKEN = "0b0d0150747a44b2b3eeb59b84eb37b4";
+    private static final String[] TOURNAMENTS = {"PL", "SA", "BL1", "PD", "FL1", "CL"};
     private List<Match> matchList = new ArrayList<>();
     private MatchDataListener matchDataListener;
+    private int tournamentsFetched = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
+        // Setting up navigation
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
@@ -46,20 +46,32 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "NavHostFragment is NULL!");
         }
 
-        fetchMatchData();
+        fetchAllMatchData();
     }
 
-    public void fetchMatchData() {
+    private void fetchAllMatchData() {
         RequestQueue queue = Volley.newRequestQueue(this);
+        for (String tournament : TOURNAMENTS) {
+            String url = "https://api.football-data.org/v4/competitions/" + tournament + "/matches";
+            fetchMatchData(queue, url);
+        }
+    }
+
+    private void fetchMatchData(RequestQueue queue, String url) {
         JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET, API_URL, null,
+                Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("API_RESPONSE", "Dữ liệu trận đấu: " + response.toString());
-                        matchList = parseMatchResponse(response);
-                        if (matchDataListener != null) {
-                            matchDataListener.onMatchDataFetched(matchList);
+                        List<Match> matches = parseMatchResponse(response);
+                        if (matches != null) {
+                            matchList.addAll(matches);
+                            tournamentsFetched++;
+
+                            // Check if all tournaments have been fetched
+                            if (tournamentsFetched == TOURNAMENTS.length && matchDataListener != null) {
+                                matchDataListener.onMatchDataFetched(matchList);
+                            }
                         }
                     }
                 },
@@ -84,33 +96,31 @@ public class MainActivity extends AppCompatActivity {
         List<Match> matches = new ArrayList<>();
         try {
             JSONArray matchesArray = response.getJSONArray("matches");
+            JSONObject competitionObject = response.getJSONObject("competition");
+            String competitionName = competitionObject.getString("name");
+
             for (int i = 0; i < matchesArray.length(); i++) {
                 JSONObject matchObject = matchesArray.getJSONObject(i);
                 JSONObject homeTeamObject = matchObject.getJSONObject("homeTeam");
                 JSONObject awayTeamObject = matchObject.getJSONObject("awayTeam");
-                JSONObject competitionObject = matchObject.getJSONObject("competition");
-                JSONObject scoreObject = matchObject.optJSONObject("score");
 
                 String homeTeamName = homeTeamObject.getString("name");
                 String homeTeamCrest = homeTeamObject.optString("crest", "");
                 String awayTeamName = awayTeamObject.getString("name");
                 String awayTeamCrest = awayTeamObject.optString("crest", "");
-                String competitionName = competitionObject.getString("name");
                 String matchTime = matchObject.getString("utcDate");
 
                 String score = "Chưa có";
-                if (scoreObject != null) {
-                    JSONObject fullTimeObject = scoreObject.optJSONObject("fullTime");
-                    if (fullTimeObject != null) {
-                        String homeScore = fullTimeObject.optString("home", "-");
-                        String awayScore = fullTimeObject.optString("away", "-");
-                        score = homeScore + " - " + awayScore;
-                    }
+                if (matchObject.has("score") && matchObject.getJSONObject("score").has("fullTime")) {
+                    JSONObject fullTime = matchObject.getJSONObject("score").getJSONObject("fullTime");
+                    score = fullTime.optString("home", "-") + " - " + fullTime.optString("away", "-");
                 }
 
-                Team homeTeam = new Team(homeTeamName, homeTeamCrest);
-                Team awayTeam = new Team(awayTeamName, awayTeamCrest);
-                Match match = new Match(homeTeam, awayTeam, score, competitionName, matchTime);
+                Match match = new Match(
+                        new Team(homeTeamName, homeTeamCrest),
+                        new Team(awayTeamName, awayTeamCrest),
+                        score, competitionName, matchTime
+                );
                 matches.add(match);
             }
         } catch (JSONException e) {
@@ -121,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setMatchDataListener(MatchDataListener listener) {
         this.matchDataListener = listener;
+        // If match data already fetched, immediately notify the listener
         if (!matchList.isEmpty()) {
             matchDataListener.onMatchDataFetched(matchList);
         }
