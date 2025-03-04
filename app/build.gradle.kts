@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.firebase:firebase-firestore:24.7.1")
+    implementation ("com.google.android.gms:play-services-basement:18.2.0")
     implementation ("com.google.firebase:firebase-database:20.2.2")
     implementation ("com.google.android.material:material:1.6.1")
     implementation ("com.google.firebase:firebase-auth:22.0.0")
@@ -41,6 +43,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -7,6 +7,7 @@
     <color name="background">#F5F5F5</color>
     <color name="light_gray">#F5F5F5</color> <!-- Màu xám nhạt -->
 
+    <color name="colorBackground">#121212</color>
 
 
     <color name="colorPrimaryLight">#6200EE</color>
@@ -19,5 +20,4 @@
     <color name="colorAccentDark">#FF4081</color>
 
     <!-- Màu nền sáng -->
-    <color name="colorBackground">#FFFFFF</color>
 </resources>

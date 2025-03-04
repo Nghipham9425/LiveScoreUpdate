@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
@@ -35,7 +34,7 @@ public class SettingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        sharedPreferences = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE); // Khởi tạo SharedPreferences
+        sharedPreferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         txtHello = view.findViewById(R.id.tvHelloUser);
         btnLogin = view.findViewById(R.id.btnLogin);
         btnJoinNow = view.findViewById(R.id.btnJoinNow);
@@ -43,29 +42,22 @@ public class SettingFragment extends Fragment {
         btnChangeColor = view.findViewById(R.id.btnChangeColor);
         btnNotifications = view.findViewById(R.id.btnNotifications);
 
-        // Cập nhật giao diện dựa trên việc người dùng có đăng nhập hay không
         updateUI();
 
-        // Sự kiện nút
         btnLogin.setOnClickListener(v -> startActivity(new Intent(getActivity(), LoginActivity.class)));
         btnJoinNow.setOnClickListener(v -> startActivity(new Intent(getActivity(), RegisterActivity.class)));
 
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
-            updateUI(); // Cập nhật giao diện sau khi đăng xuất
+            updateUI();
         });
 
-        // Chuyển đổi giữa chế độ sáng và tối
         btnChangeColor.setOnClickListener(v -> {
-            boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false); // Kiểm tra trạng thái chế độ tối
+            boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("dark_mode", !isDarkMode); // Chuyển đổi chế độ
+            editor.putBoolean("dark_mode", !isDarkMode);
             editor.apply();
-            applyTheme(); // Áp dụng chế độ mới ngay lập tức
-        });
-
-        btnNotifications.setOnClickListener(v -> {
-            // Xử lý thiết lập thông báo
+            applyTheme();
         });
     }
 
@@ -73,20 +65,14 @@ public class SettingFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String username = user.getDisplayName();
-            if (username != null && !username.isEmpty()) {
-                txtHello.setText("Chào bạn, " + username);
-            } else {
-                txtHello.setText("Chào bạn, User");
-            }
+            txtHello.setText(username != null && !username.isEmpty() ? "Chào bạn, " + username : "Chào bạn, User");
             txtHello.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.VISIBLE);
-
             btnLogin.setVisibility(View.GONE);
             btnJoinNow.setVisibility(View.GONE);
         } else {
             txtHello.setVisibility(View.GONE);
             btnLogout.setVisibility(View.GONE);
-
             btnLogin.setVisibility(View.VISIBLE);
             btnJoinNow.setVisibility(View.VISIBLE);
         }
@@ -95,15 +81,17 @@ public class SettingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        applyTheme(); // Đảm bảo áp dụng đúng chế độ khi Fragment được hiển thị lại
+        applyTheme();
     }
 
     private void applyTheme() {
         boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // Chế độ tối
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // Chế độ sáng
+        int mode = isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+
+        if (AppCompatDelegate.getDefaultNightMode() != mode) {
+            AppCompatDelegate.setDefaultNightMode(mode);
+            requireActivity().recreate(); // Reload lại Activity để cập nhật theme
         }
     }
+
 }

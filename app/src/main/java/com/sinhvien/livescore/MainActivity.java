@@ -13,13 +13,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Match> matchList = new ArrayList<>();
     private MatchDataListener matchDataListener;
     private int tournamentsFetched = 0;
+    private FirebaseHelper firebaseHelper;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomNavigation);
+        firebaseHelper = new FirebaseHelper();
 
-        // Setting up navigation
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "NavHostFragment is NULL!");
         }
 
-        fetchAllMatchData();
+        executorService.execute(this::fetchAllMatchData);
     }
 
     private void fetchAllMatchData() {
@@ -60,27 +64,21 @@ public class MainActivity extends AppCompatActivity {
     private void fetchMatchData(RequestQueue queue, String url) {
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        List<Match> matches = parseMatchResponse(response);
-                        if (matches != null) {
-                            matchList.addAll(matches);
-                            tournamentsFetched++;
-
-                            // Check if all tournaments have been fetched
-                            if (tournamentsFetched == TOURNAMENTS.length && matchDataListener != null) {
-                                matchDataListener.onMatchDataFetched(matchList);
-                            }
+                response -> {
+                    List<Match> matches = parseMatchResponse(response);
+                    if (matches != null) {
+                        matchList.addAll(matches);
+                        tournamentsFetched++;
+                        for (Match match : matches) {
+                            firebaseHelper.checkAndSaveMatch(match);
+                        }
+                        if (tournamentsFetched == TOURNAMENTS.length && matchDataListener != null) {
+                            matchDataListener.onMatchDataFetched(matchList);
                         }
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("API_ERROR", "Lỗi khi gọi API: " + error.toString());
-                    }
-                }) {
+                error -> Log.e("API_ERROR", "Lỗi khi gọi API: " + error.toString())
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -88,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 return headers;
             }
         };
-
         queue.add(request);
     }
 
@@ -105,22 +102,22 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject awayTeamObject = matchObject.getJSONObject("awayTeam");
 
                 String homeTeamName = homeTeamObject.getString("name");
-                String homeTeamCrest = homeTeamObject.optString("crest", "");
                 String awayTeamName = awayTeamObject.getString("name");
-                String awayTeamCrest = awayTeamObject.optString("crest", "");
+
+                // Lấy logo đội bóng (nếu có)
+                String homeCrest = homeTeamObject.has("crest") ? homeTeamObject.getString("crest") : "";
+                String awayCrest = awayTeamObject.has("crest") ? awayTeamObject.getString("crest") : "";
+
                 String matchTime = matchObject.getString("utcDate");
 
+                // Kiểm tra điểm số trận đấu
                 String score = "Chưa có";
                 if (matchObject.has("score") && matchObject.getJSONObject("score").has("fullTime")) {
                     JSONObject fullTime = matchObject.getJSONObject("score").getJSONObject("fullTime");
                     score = fullTime.optString("home", "-") + " - " + fullTime.optString("away", "-");
                 }
 
-                Match match = new Match(
-                        new Team(homeTeamName, homeTeamCrest),
-                        new Team(awayTeamName, awayTeamCrest),
-                        score, competitionName, matchTime
-                );
+                Match match = new Match(new Team(homeTeamName, homeCrest), new Team(awayTeamName, awayCrest), score, competitionName, matchTime);
                 matches.add(match);
             }
         } catch (JSONException e) {
@@ -131,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setMatchDataListener(MatchDataListener listener) {
         this.matchDataListener = listener;
-        // If match data already fetched, immediately notify the listener
         if (!matchList.isEmpty()) {
             matchDataListener.onMatchDataFetched(matchList);
         }
