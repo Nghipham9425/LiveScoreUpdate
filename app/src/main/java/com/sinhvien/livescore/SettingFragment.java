@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SettingFragment extends Fragment {
     private FirebaseAuth mAuth;
@@ -64,17 +65,37 @@ public class SettingFragment extends Fragment {
     private void updateUI() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            String username = user.getDisplayName();
-            txtHello.setText(username != null && !username.isEmpty() ? "Chào bạn, " + username : "Chào bạn, User");
+            // Lấy tên người dùng từ Firestore
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String username = documentSnapshot.getString("username");
+                            if (username != null && !username.isEmpty()) {
+                                txtHello.setText("Chào bạn, " + username);
+                            } else {
+                                txtHello.setText("Chào bạn, User");
+                            }
+                        } else {
+                            // Nếu không có username trong Firestore
+                            txtHello.setText("Chào bạn, User");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Nếu gặp lỗi khi lấy username
+                        txtHello.setText("Chào bạn, User");
+                    });
+
             txtHello.setVisibility(View.VISIBLE);
-            btnLogout.setVisibility(View.VISIBLE);
-            btnLogin.setVisibility(View.GONE);
-            btnJoinNow.setVisibility(View.GONE);
+            btnLogout.setVisibility(View.VISIBLE);  // Hiển thị nút Logout
+            btnLogin.setVisibility(View.GONE);     // Ẩn nút Login
+            btnJoinNow.setVisibility(View.GONE);   // Ẩn nút Join Now
         } else {
             txtHello.setVisibility(View.GONE);
-            btnLogout.setVisibility(View.GONE);
-            btnLogin.setVisibility(View.VISIBLE);
-            btnJoinNow.setVisibility(View.VISIBLE);
+            btnLogout.setVisibility(View.GONE);   // Ẩn nút Logout
+            btnLogin.setVisibility(View.VISIBLE); // Hiển thị nút Login
+            btnJoinNow.setVisibility(View.VISIBLE); // Hiển thị nút Join Now
         }
     }
 
@@ -93,5 +114,4 @@ public class SettingFragment extends Fragment {
             requireActivity().recreate(); // Reload lại Activity để cập nhật theme
         }
     }
-
 }

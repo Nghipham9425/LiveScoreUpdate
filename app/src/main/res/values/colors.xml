@@ -6,9 +6,15 @@
     <color name="primary">#FF5722</color> <!-- Màu cam đẹp -->
     <color name="background">#F5F5F5</color>
     <color name="light_gray">#F5F5F5</color> <!-- Màu xám nhạt -->
+    <color name="status_live">#FF4444</color>        <!-- Đỏ cho trận đang diễn ra -->
+    <color name="status_finished">#888888</color>    <!-- Xám cho trận đã kết thúc -->
+    <color name="status_upcoming">#448AFF</color>    <!-- Xanh dương cho trận sắp diễn ra -->
+    <color name="status_default">#E0E0E0</color>     <!-- Mặc định nếu trạng thái không xác định -->
 
     <color name="colorBackground">#121212</color>
 
+    <color name="red">#E53935</color> <!-- Màu đỏ cho LIVE -->
+    <color name="blue">#42A5F5</color> <!-- Màu xanh dương cho UPCOMING -->
 
     <color name="colorPrimaryLight">#6200EE</color>
     <color name="colorPrimaryDarkLight">#3700B3</color>  <!-- Màu tối khi ở chế độ sáng -->

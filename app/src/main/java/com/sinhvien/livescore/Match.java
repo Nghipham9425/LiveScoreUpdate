@@ -1,22 +1,32 @@
 package com.sinhvien.livescore;
 
 public class Match {
+    private String matchId;
     private Team homeTeam;
     private Team awayTeam;
     private String score;
     private String competition;
-    private String time;
+    private String matchTime;
+    private String status;
 
-    // Constructor
-    public Match(Team homeTeam, Team awayTeam, String score, String competition, String time) {
+    public Match()
+    {
+
+    }
+    public Match(String matchId, Team homeTeam, Team awayTeam, String score, String competition, String matchTime, String status) {
+        this.matchId = matchId;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.score = score;
         this.competition = competition;
-        this.time = time;
+        this.matchTime = matchTime;
+        this.status = status;
     }
 
-    // Getter methods
+    public String getMatchId() {
+        return matchId;
+    }
+
     public Team getHomeTeam() {
         return homeTeam;
     }
@@ -33,7 +43,11 @@ public class Match {
         return competition;
     }
 
-    public String getTime() {
-        return time;
+    public String getMatchTime() {
+        return matchTime;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

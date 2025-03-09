@@ -2,29 +2,33 @@ package com.sinhvien.livescore;
 
 public class Team {
     private String name;
-    private String crest;
+    private String crestUrl;
 
-    // Constructor
-    public Team(String name, String crest) {
-        this.name = name;
-        this.crest = crest;
+    // Constructor không tham số (bắt buộc cho Firestore)
+    public Team() {
+        // Constructor trống
     }
 
-    // Getter methods
+    // Constructor với tham số (nếu cần)
+    public Team(String name, String crestUrl) {
+        this.name = name;
+        this.crestUrl = crestUrl;
+    }
+
+    // Getters và Setters
     public String getName() {
         return name;
     }
 
-    public String getCrest() {
-        return crest;
-    }
-
-    // Optional: Setter methods nếu cần thay đổi các giá trị sau này
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setCrest(String crest) {
-        this.crest = crest;
+    public String getCrestUrl() {
+        return crestUrl;
+    }
+
+    public void setCrestUrl(String crestUrl) {
+        this.crestUrl = crestUrl;
     }
 }

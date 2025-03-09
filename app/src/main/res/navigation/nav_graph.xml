@@ -8,6 +8,11 @@
         android:id="@+id/navigation_home"
         android:name="com.sinhvien.livescore.HomeFragment"
         android:label="Home" />
+    <fragment
+        android:id="@+id/navigation_standings"
+        android:name="com.sinhvien.livescore.StandingsFragment"
+        android:label="Bảng Xếp Hạng" />
+
 
     <fragment
        android:id="@+id/navigation_favorite"

@@ -7,10 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
+
     private EditText edtEmail, edtPassword;
     private Button buttonLogin;
     private TextView textRegister;
@@ -27,7 +30,10 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textRegister = findViewById(R.id.textRegister);
 
+        // Đăng nhập
         buttonLogin.setOnClickListener(v -> loginUser());
+
+        // Chuyển đến màn hình đăng ký
         textRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
     }
 

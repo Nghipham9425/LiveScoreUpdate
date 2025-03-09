@@ -1,68 +1,86 @@
 package com.sinhvien.livescore;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context;
+import android.view.*;
+import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import java.util.List;
+import java.util.*;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
-    private List<Match> matchList; // Đảm bảo sử dụng List<Match>
+    private final Context context;
+    private final List<Match> matches;
 
-    public MatchAdapter(List<Match> matchList) {
-        this.matchList = matchList;
+    public MatchAdapter(Context context, List<Match> matches) {
+        this.context = context;
+        this.matches = matches;
     }
 
     @NonNull
     @Override
     public MatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_match, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_match, parent, false);
         return new MatchViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
-        Match match = matchList.get(position); // Dùng Match thay vì MatchItem
+        Match match = matches.get(position);
 
-        holder.tvHomeTeam.setText(match.getHomeTeam().getName());
-        holder.tvAwayTeam.setText(match.getAwayTeam().getName());
+        // Set dữ liệu vào UI
         holder.tvCompetition.setText(match.getCompetition());
         holder.tvScore.setText(match.getScore());
-        holder.tvTime.setText(match.getTime());
+        holder.tvHomeTeam.setText(match.getHomeTeam().getName());
+        holder.tvAwayTeam.setText(match.getAwayTeam().getName());
+        holder.tvTime.setText(match.getMatchTime());
+        holder.tvStatus.setText(match.getStatus()); // Gán trạng thái trận đấu
 
-        // Hiển thị logo đội bóng
-        Glide.with(holder.itemView.getContext()).load(match.getHomeTeam().getCrest()).into(holder.ivHomeTeam);
-        Glide.with(holder.itemView.getContext()).load(match.getAwayTeam().getCrest()).into(holder.ivAwayTeam);
+        // Load ảnh đội bóng bằng Glide
+        Glide.with(context).load(match.getHomeTeam().getCrestUrl()).into(holder.ivHomeTeam);
+        Glide.with(context).load(match.getAwayTeam().getCrestUrl()).into(holder.ivAwayTeam);
+
+        // 🔥 Đổi màu nền badge dựa theo trạng thái trận đấu
+        switch (match.getStatus().toUpperCase()) {
+            case "LIVE":
+                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_live));
+                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                break;
+            case "FINISHED":
+                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_finished));
+                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                break;
+            case "UPCOMING":
+                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_upcoming));
+                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                break;
+            default:
+                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_default));
+                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.black));
+                break;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return matchList.size();
+        return matches.size();
     }
 
     public static class MatchViewHolder extends RecyclerView.ViewHolder {
-        TextView tvHomeTeam, tvAwayTeam, tvCompetition, tvScore, tvTime;
+        TextView tvCompetition, tvScore, tvHomeTeam, tvAwayTeam, tvTime, tvStatus;
         ImageView ivHomeTeam, ivAwayTeam;
 
         public MatchViewHolder(View itemView) {
             super(itemView);
-            tvHomeTeam = itemView.findViewById(R.id.tvHomeTeam);
-            tvAwayTeam = itemView.findViewById(R.id.tvAwayTeam);
             tvCompetition = itemView.findViewById(R.id.tvCompetition);
             tvScore = itemView.findViewById(R.id.tvScore);
+            tvHomeTeam = itemView.findViewById(R.id.tvHomeTeam);
+            tvAwayTeam = itemView.findViewById(R.id.tvAwayTeam);
             tvTime = itemView.findViewById(R.id.tvTime);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
             ivHomeTeam = itemView.findViewById(R.id.ivHomeTeam);
             ivAwayTeam = itemView.findViewById(R.id.ivAwayTeam);
         }
-    }
-
-    // Phương thức setMatches để cập nhật danh sách dữ liệu
-    public void setMatches(List<Match> matches) {
-        this.matchList = matches;
-        notifyDataSetChanged();
     }
 }

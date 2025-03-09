@@ -65,11 +65,20 @@
         android:padding="12dp"
         android:layout_marginTop="16dp"/>
 
+    <!-- ProgressBar for showing the loading indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:indeterminate="true"/>
+
     <TextView
         android:id="@+id/textLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Đã có tài khoản? Đăng nhập ngay"
+        android:text="Đã có tài khoản? Đăng nhập"
         android:textColor="@color/primary"
         android:layout_marginTop="16dp"
         android:textSize="14sp"

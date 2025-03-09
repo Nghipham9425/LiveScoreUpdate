@@ -3,12 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="16dp"
+    android:background="#F5F5F5">
 
+    <!-- Dropdown chọn giải đấu -->
+    <Spinner
+        android:id="@+id/spinnerLeague"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- RecyclerView hiển thị bảng xếp hạng -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStandings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
-
+        android:scrollbars="vertical"
+        android:background="@android:color/white" />
 </LinearLayout>

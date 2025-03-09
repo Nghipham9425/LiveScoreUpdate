@@ -21,4 +21,10 @@ public interface FootballApiService {
 
     @GET("teams/{teamId}")
     Call<TeamResponse> getTeamInfo(@Path("teamId") int teamId);
+
+    @GET("competitions/{competitionId}/standings")
+    Call<StandingsResponse> getStandings(
+            @Path("competitionId") String competitionId
+    );
+
 }
