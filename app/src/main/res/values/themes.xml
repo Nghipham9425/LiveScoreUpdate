@@ -1,9 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.LiveScore" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#6200EE</item>
-        <item name="colorPrimaryVariant">#3700B3</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorBackground">#FFFFFF</item>
-        <item name="colorOnBackground">#000000</item>
+        <!-- Cấu hình màu sắc cho chế độ sáng -->
+        <item name="colorPrimary">@color/primary</item> <!-- Màu xanh cho thanh AppBar -->
+        <item name="colorPrimaryVariant">@color/primary_dark</item> <!-- Màu đậm cho AppBar khi mở rộng -->
+        <item name="colorOnPrimary">@android:color/white</item> <!-- Chữ màu trắng trên thanh AppBar -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@android:color/white</item>
     </style>
 </resources>

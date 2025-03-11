@@ -1,4 +1,9 @@
-package com.sinhvien.livescore;
+package com.sinhvien.livescore.Network;
+
+import com.sinhvien.livescore.Models.Competition;
+import com.sinhvien.livescore.Models.MatchResponse;
+import com.sinhvien.livescore.Models.StandingsResponse;
+import com.sinhvien.livescore.Models.TeamResponse;
 
 import java.util.List;
 import retrofit2.Call;

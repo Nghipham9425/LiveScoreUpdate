@@ -1,140 +1,140 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="20dp"
-    android:background="@color/white">
+    android:background="@color/background_light"> <!-- Sử dụng màu nền cố định ở đây -->
 
-    <!-- Chào mừng người dùng -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="LiveScore"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_gravity="center">
 
-    <TextView
-        android:id="@+id/tvHelloUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Hello, User!"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <!-- Hàng nút Login & Join Now -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
-
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="150dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:backgroundTint="@color/gray"
-            android:textColor="@android:color/black"
-            android:layout_marginEnd="8dp"/>
+            android:minHeight="200dp"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal|center_vertical">
 
-        <Button
-            android:id="@+id/btnJoinNow"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Join now"
-            android:backgroundTint="@color/gray"
-            android:textColor="@android:color/black"/>
-    </LinearLayout>
+            <!-- Header Section -->
+            <TextView
+                android:id="@+id/tvLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LiveScore"
+                android:textColor="@color/primary"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-medium" />
 
-    <!-- Nút Notifications -->
-    <Button
-        android:id="@+id/btnNotifications"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Notifications"
-        android:backgroundTint="@color/gray"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="16dp" />
+            <!-- Welcome Message -->
+            <TextView
+                android:id="@+id/tvHelloUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello, User!"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="sans-serif" />
 
-    <!-- Nút Change Mode (Background color or Dark/Light Mode) với logo bên cạnh -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal">
+            <!-- Login & Join Now Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
 
-        <Button
-            android:id="@+id/btnChangeColor"
-            android:layout_width="244dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:background="@color/gray"
-            android:backgroundTint="@color/gray"
-            android:text="Dark Mode"
-            android:textColor="@android:color/black" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogin"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="Login"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:cornerRadius="8dp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/primary" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnJoinNow"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:text="Join now"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:cornerRadius="8dp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/primary" />
+            </LinearLayout>
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:background="@color/gray"
-            android:contentDescription="Sun Icon"
-            android:scaleType="fitCenter"
-            android:src="@drawable/light_ic" />
-    </LinearLayout>
+            <!-- Notifications Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Notifications"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@android:color/black"
+                android:backgroundTint="@color/primary" />
 
-    <!-- Chữ Follow Us -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="FOLLOW US"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
+            <!-- Dark Mode Button with Icon -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
-    <!-- Icon mạng xã hội -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dark Mode"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/facebook_ic" />
+                <FrameLayout
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:focusable="true">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ins_ic" />
+                    <ImageView
+                        android:id="@+id/imgThemeIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Theme Icon"
+                        android:src="@drawable/light_ic" />
+                </FrameLayout>
+            </LinearLayout>
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/x_ic" />
-    </LinearLayout>
-
-    <!-- Nút Logout -->
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Log out"
-        android:backgroundTint="@color/gray"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="16dp"/>
-</LinearLayout>
+            <!-- Logout Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Log out"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:strokeColor="@android:color/holo_red_light"
+                app:strokeWidth="1dp" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

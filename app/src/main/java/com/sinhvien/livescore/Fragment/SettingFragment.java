@@ -1,8 +1,6 @@
-package com.sinhvien.livescore;
+package com.sinhvien.livescore.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +10,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.sinhvien.livescore.Activities.LoginActivity;
+import com.sinhvien.livescore.R;
+import com.sinhvien.livescore.Activities.RegisterActivity;
 
 public class SettingFragment extends Fragment {
     private FirebaseAuth mAuth;
     private TextView txtHello;
-    private Button btnLogin, btnJoinNow, btnLogout, btnChangeColor, btnNotifications;
-    private SharedPreferences sharedPreferences;
+    private Button btnLogin, btnJoinNow, btnLogout, btnNotifications;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,12 +34,10 @@ public class SettingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        sharedPreferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         txtHello = view.findViewById(R.id.tvHelloUser);
         btnLogin = view.findViewById(R.id.btnLogin);
         btnJoinNow = view.findViewById(R.id.btnJoinNow);
         btnLogout = view.findViewById(R.id.btnLogout);
-        btnChangeColor = view.findViewById(R.id.btnChangeColor);
         btnNotifications = view.findViewById(R.id.btnNotifications);
 
         updateUI();
@@ -52,22 +49,14 @@ public class SettingFragment extends Fragment {
             mAuth.signOut();
             updateUI();
         });
-
-        btnChangeColor.setOnClickListener(v -> {
-            boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("dark_mode", !isDarkMode);
-            editor.apply();
-            applyTheme();
-        });
     }
 
     private void updateUI() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            // Lấy tên người dùng từ Firestore
+            // Get username from Firestore
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("users").document(user.getUid())
+            db.collection("Users").document(user.getUid())
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
@@ -78,40 +67,24 @@ public class SettingFragment extends Fragment {
                                 txtHello.setText("Chào bạn, User");
                             }
                         } else {
-                            // Nếu không có username trong Firestore
+                            // If no username in Firestore
                             txtHello.setText("Chào bạn, User");
                         }
                     })
                     .addOnFailureListener(e -> {
-                        // Nếu gặp lỗi khi lấy username
+                        // If error while fetching username
                         txtHello.setText("Chào bạn, User");
                     });
 
             txtHello.setVisibility(View.VISIBLE);
-            btnLogout.setVisibility(View.VISIBLE);  // Hiển thị nút Logout
-            btnLogin.setVisibility(View.GONE);     // Ẩn nút Login
-            btnJoinNow.setVisibility(View.GONE);   // Ẩn nút Join Now
+            btnLogout.setVisibility(View.VISIBLE);  // Show Logout button
+            btnLogin.setVisibility(View.GONE);     // Hide Login button
+            btnJoinNow.setVisibility(View.GONE);   // Hide Join Now button
         } else {
             txtHello.setVisibility(View.GONE);
-            btnLogout.setVisibility(View.GONE);   // Ẩn nút Logout
-            btnLogin.setVisibility(View.VISIBLE); // Hiển thị nút Login
-            btnJoinNow.setVisibility(View.VISIBLE); // Hiển thị nút Join Now
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        applyTheme();
-    }
-
-    private void applyTheme() {
-        boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
-        int mode = isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-
-        if (AppCompatDelegate.getDefaultNightMode() != mode) {
-            AppCompatDelegate.setDefaultNightMode(mode);
-            requireActivity().recreate(); // Reload lại Activity để cập nhật theme
+            btnLogout.setVisibility(View.GONE);   // Hide Logout button
+            btnLogin.setVisibility(View.VISIBLE); // Show Login button
+            btnJoinNow.setVisibility(View.VISIBLE); // Show Join Now button
         }
     }
 }

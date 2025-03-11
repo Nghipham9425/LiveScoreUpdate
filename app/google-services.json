@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "463570452525",
+    "firebase_url": "https://livescore-4f80d-default-rtdb.firebaseio.com",
+    "project_id": "livescore-4f80d",
+    "storage_bucket": "livescore-4f80d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463570452525:android:ec389643d27c1e7c61f8a4",
+        "android_client_info": {
+          "package_name": "com.sinhvien.livescore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0ipL2xAX0AqRULVGgXVR5r8L9XaFLi80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

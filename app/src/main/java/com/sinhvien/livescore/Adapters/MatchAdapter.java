@@ -1,4 +1,4 @@
-package com.sinhvien.livescore;
+package com.sinhvien.livescore.Adapters;
 
 import android.content.Context;
 import android.view.*;
@@ -7,15 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.sinhvien.livescore.Models.Match;
+import com.sinhvien.livescore.R;
+
 import java.util.*;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
     private final Context context;
-    private final List<Match> matches;
+    private final List<Match> originalMatches; // Danh sách gốc
+    private List<Match> filteredMatches; // Danh sách đã lọc
 
     public MatchAdapter(Context context, List<Match> matches) {
         this.context = context;
-        this.matches = matches;
+        this.originalMatches = new ArrayList<>(matches);
+        this.filteredMatches = new ArrayList<>(matches);
     }
 
     @NonNull
@@ -27,21 +32,18 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
-        Match match = matches.get(position);
+        Match match = filteredMatches.get(position);
 
-        // Set dữ liệu vào UI
         holder.tvCompetition.setText(match.getCompetition());
         holder.tvScore.setText(match.getScore());
         holder.tvHomeTeam.setText(match.getHomeTeam().getName());
         holder.tvAwayTeam.setText(match.getAwayTeam().getName());
         holder.tvTime.setText(match.getMatchTime());
-        holder.tvStatus.setText(match.getStatus()); // Gán trạng thái trận đấu
+        holder.tvStatus.setText(match.getStatus());
 
-        // Load ảnh đội bóng bằng Glide
-        Glide.with(context).load(match.getHomeTeam().getCrestUrl()).into(holder.ivHomeTeam);
-        Glide.with(context).load(match.getAwayTeam().getCrestUrl()).into(holder.ivAwayTeam);
+        Glide.with(context).load(match.getHomeTeam().getCrest()).into(holder.ivHomeTeam);
+        Glide.with(context).load(match.getAwayTeam().getCrest()).into(holder.ivAwayTeam);
 
-        // 🔥 Đổi màu nền badge dựa theo trạng thái trận đấu
         switch (match.getStatus().toUpperCase()) {
             case "LIVE":
                 holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_live));
@@ -64,7 +66,30 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
     @Override
     public int getItemCount() {
-        return matches.size();
+        return filteredMatches.size();
+    }
+
+    // 🔥 Cập nhật toàn bộ danh sách trận đấu
+    public void updateData(List<Match> newMatches) {
+        originalMatches.clear();
+        originalMatches.addAll(newMatches);
+        filterMatches(""); // Giữ nguyên danh sách nếu không có filter
+    }
+
+    // 🔍 Lọc danh sách trận đấu theo tên đội bóng
+    public void filterMatches(String query) {
+        filteredMatches.clear();
+        if (query.isEmpty()) {
+            filteredMatches.addAll(originalMatches);
+        } else {
+            for (Match match : originalMatches) {
+                if (match.getHomeTeam().getName().toLowerCase().contains(query.toLowerCase()) ||
+                        match.getAwayTeam().getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredMatches.add(match);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public static class MatchViewHolder extends RecyclerView.ViewHolder {

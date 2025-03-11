@@ -6,21 +6,21 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.sinhvien.livescore.HomeFragment"
+        android:name="com.sinhvien.livescore.Fragment.HomeFragment"
         android:label="Home" />
     <fragment
         android:id="@+id/navigation_standings"
-        android:name="com.sinhvien.livescore.StandingsFragment"
+        android:name="com.sinhvien.livescore.Fragment.StandingsFragment"
         android:label="Bảng Xếp Hạng" />
 
 
     <fragment
        android:id="@+id/navigation_favorite"
-    android:name="com.sinhvien.livescore.FavoriteFragment"
+    android:name="com.sinhvien.livescore.Fragment.FavoriteFragment"
     android:label="Favorite" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.sinhvien.livescore.SettingFragment"
+        android:name="com.sinhvien.livescore.Fragment.SettingFragment"
         android:label="Settings" />
 </navigation>

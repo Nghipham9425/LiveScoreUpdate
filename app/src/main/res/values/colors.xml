@@ -1,29 +1,34 @@
 <resources>
-    <!-- Màu chung -->
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="gray">#D3D3D3</color> <!-- Màu xám nhạt -->
-    <color name="primary">#FF5722</color> <!-- Màu cam đẹp -->
-    <color name="background">#F5F5F5</color>
-    <color name="light_gray">#F5F5F5</color> <!-- Màu xám nhạt -->
-    <color name="status_live">#FF4444</color>        <!-- Đỏ cho trận đang diễn ra -->
-    <color name="status_finished">#888888</color>    <!-- Xám cho trận đã kết thúc -->
-    <color name="status_upcoming">#448AFF</color>    <!-- Xanh dương cho trận sắp diễn ra -->
-    <color name="status_default">#E0E0E0</color>     <!-- Mặc định nếu trạng thái không xác định -->
+    <!-- Các màu cơ bản -->
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#0000FF</color>
+    <color name="black">#000000</color>
+    <color name="text_primary_dark">#000000</color>
+    <color name="status_live">#FF4444</color>
+    <color name="status_finished">#888888</color>
+    <color name="status_upcoming">#448AFF</color>
+    <color name="error">#F44336</color>
+    <color name="light_gray">#D3D3D3</color>
+    <color name="status_default">#E0E0E0</color>
+    <color name="primary">#3D5AFE</color>
+    <color name="primary_variant">#0039CB</color>
+    <color name="secondary">#FF4081</color>
+    <color name="gray">#D3D3D3</color>
 
-    <color name="colorBackground">#121212</color>
+    <!-- Màu nền cho chế độ sáng và tối -->
+    <color name="background_light">#F8F9FA</color>
+    <color name="background_dark">#121212</color> <!-- Màu nền tối -->
+    <color name="surface_light">#F5F5F5</color>
 
-    <color name="red">#E53935</color> <!-- Màu đỏ cho LIVE -->
-    <color name="blue">#42A5F5</color> <!-- Màu xanh dương cho UPCOMING -->
+    <!-- Màu văn bản -->
+    <color name="text_primary">#212529</color>
+    <color name="text_secondary">#495057</color>
+    <color name="primary_dark">#00796B</color> <!-- Màu xanh đậm cho trạng thái mở rộng -->
 
-    <color name="colorPrimaryLight">#6200EE</color>
-    <color name="colorPrimaryDarkLight">#3700B3</color>  <!-- Màu tối khi ở chế độ sáng -->
-    <color name="colorAccentLight">#03DAC5</color> <!-- Màu phụ sáng -->
+    <!-- Các màu chính của ứng dụng -->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    </resources>
 
-    <!-- Màu cho chế độ tối -->
-    <color name="colorPrimaryDarkDark">#BB86FC</color>
-    <color name="colorPrimaryDarkDarker">#121212</color>
-    <color name="colorAccentDark">#FF4081</color>
-
-    <!-- Màu nền sáng -->
-</resources>

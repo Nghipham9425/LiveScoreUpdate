@@ -1,4 +1,4 @@
-package com.sinhvien.livescore;
+package com.sinhvien.livescore.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,15 +8,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.*;
+import com.sinhvien.livescore.Adapters.StandingAdapter;
+import com.sinhvien.livescore.Models.Standing;
 import com.sinhvien.livescore.R;
-import com.sinhvien.livescore.StandingAdapter;
-import com.sinhvien.livescore.Standing;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +46,7 @@ public class StandingsFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
+        // Setup Spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, leagues);
         spinnerLeague.setAdapter(spinnerAdapter);
 
@@ -53,6 +58,7 @@ public class StandingsFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing if no selection
             }
         });
 
@@ -60,7 +66,8 @@ public class StandingsFragment extends Fragment {
     }
 
     private void loadStandingsFromFirestore(String league) {
-        db.collection("standings").document(league)
+        db.collection("standings")
+                .document(league)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
@@ -68,12 +75,18 @@ public class StandingsFragment extends Fragment {
                         List<Standing> standings = (List<Standing>) documentSnapshot.get("table");
                         if (standings != null) {
                             standingsList.addAll(standings);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), "No standings data available", Toast.LENGTH_SHORT).show();
                         }
-                        adapter.notifyDataSetChanged();
                     } else {
-                        Log.e("Firestore", "Không có dữ liệu standings!");
+                        Log.e("Firestore", "No data found for " + league);
+                        Toast.makeText(getContext(), "No standings data for " + league, Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(e -> Log.e("Firestore", "Lỗi tải standings", e));
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error loading standings", e);
+                    Toast.makeText(getContext(), "Failed to load standings", Toast.LENGTH_SHORT).show();
+                });
     }
 }

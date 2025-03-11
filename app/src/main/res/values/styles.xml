@@ -1,10 +1,20 @@
 <resources>
     <!-- Chế độ sáng -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimaryLight</item>      <!-- Màu chính sáng -->
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkLight</item> <!-- Màu chính tối nhẹ khi app ở chế độ sáng -->
-        <item name="colorAccent">@color/colorAccentLight</item>        <!-- Màu phụ sáng -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar"> <!-- Sử dụng Theme.MaterialComponents -->
 
-        <item name="android:windowBackground">@color/colorBackground</item> <!-- Màu nền sáng -->
+        <!-- Màu cho AppBar -->
+        <item name="colorPrimary">@color/primary</item> <!-- Màu xanh cho AppBar -->
+        <item name="colorPrimaryVariant">#3700B3</item> <!-- Màu đậm cho AppBar khi mở rộng -->
+        <item name="colorOnPrimary">@android:color/white</item> <!-- Chữ màu trắng trên AppBar -->
+
+        <!-- Màu Accent -->
+        <item name="colorAccent">#03DAC5</item> <!-- Màu accent -->
+
+        <!-- Màu nền chung của ứng dụng -->
+        <item name="android:windowBackground">@color/background_light</item>
+
+        <!-- Màu chữ chính của ứng dụng -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+
     </style>
 </resources>
