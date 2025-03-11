@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:padding="8dp"
     android:gravity="center_vertical"
-    android:background="@color/background">
+    android:background="@color/background_light">
 
     <!-- Vị trí xếp hạng -->
     <TextView

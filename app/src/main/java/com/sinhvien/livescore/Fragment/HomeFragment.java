@@ -1,12 +1,19 @@
-package com.sinhvien.livescore;
+package com.sinhvien.livescore.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
-import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.*;
+
+import com.sinhvien.livescore.FireBase.FirebaseHelper;
+import com.sinhvien.livescore.Models.Match;
+import com.sinhvien.livescore.Adapters.MatchAdapter;
+import com.sinhvien.livescore.R;
+
 import java.util.*;
 
 public class HomeFragment extends Fragment {
@@ -14,6 +21,7 @@ public class HomeFragment extends Fragment {
     private MatchAdapter matchAdapter;
     private FirebaseHelper firebaseHelper;
     private Spinner spinnerCompetition;
+    private EditText searchTeam;
     private List<Match> matchList = new ArrayList<>();
 
     @Override
@@ -21,6 +29,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         spinnerCompetition = view.findViewById(R.id.spinnerLeague);
+        searchTeam = view.findViewById(R.id.searchTeam);
         firebaseHelper = new FirebaseHelper();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -28,6 +37,8 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(matchAdapter);
 
         setupSpinner();
+        setupSearch();
+
         return view;
     }
 
@@ -48,12 +59,26 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    // 🔥 Sử dụng snapshot listener để tải dữ liệu theo thời gian thực
     private void loadMatches(String competitionName) {
         firebaseHelper.listenForMatchUpdates(competitionName, updatedMatches -> {
             matchList.clear();
             matchList.addAll(updatedMatches);
-            matchAdapter.notifyDataSetChanged();
+            matchAdapter.updateData(matchList);
+        });
+    }
+
+    private void setupSearch() {
+        searchTeam.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                matchAdapter.filterMatches(s.toString()); // Gọi filter từ Adapter
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
     }
 }

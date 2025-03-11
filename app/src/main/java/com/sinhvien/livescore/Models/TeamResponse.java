@@ -1,4 +1,4 @@
-package com.sinhvien.livescore;
+package com.sinhvien.livescore.Models;
 
 import com.google.gson.annotations.SerializedName;
 

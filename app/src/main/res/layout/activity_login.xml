@@ -5,7 +5,7 @@
     android:padding="24dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@color/background_light">
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,6 +43,14 @@
         android:backgroundTint="@color/primary"
         android:textColor="@android:color/white"
         android:padding="12dp"
+        android:layout_marginTop="16dp"/>
+
+    <!-- ProgressBar thêm vào đây -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="16dp"/>
 
     <TextView
