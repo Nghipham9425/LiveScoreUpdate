@@ -11,6 +11,8 @@ public class Match {
     private Team homeTeam;
     private Team awayTeam;
 
+    private boolean isFavorite;
+
     public Match() {
         // Required empty constructor for Firestore
     }
@@ -82,4 +84,6 @@ public class Match {
     public void setAwayTeam(Team awayTeam) {
         this.awayTeam = awayTeam;
     }
+    public boolean isFavorite() { return isFavorite; }
+    public void setFavorite(boolean favorite) { isFavorite = favorite; }
 }

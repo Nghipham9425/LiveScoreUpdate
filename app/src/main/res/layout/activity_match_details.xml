@@ -4,25 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#F8F9FA">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
 
         <!-- Header - Premier League Banner -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#38003C"
+                android:background="#37003C"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -39,7 +40,7 @@
                     android:layout_gravity="center_horizontal"
                     android:text="Premier League"
                     android:textColor="#FFFFFF"
-                    android:textSize="22sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -48,7 +49,8 @@
                     android:layout_gravity="center_horizontal"
                     android:text="Matchday 25"
                     android:textColor="#00FF85"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -57,8 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,8 +72,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12/02/2022 - 12:30 UTC"
-                    android:textColor="#666666"
-                    android:textSize="14sp" />
+                    android:textColor="#37003C"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,20 +103,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:background="#E8F5E9"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
                     android:text="Trạng thái: FINISHED"
-                    android:textColor="#009900"
+                    android:textColor="#2E7D32"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Score Board -->
+        <!-- Score Board (Clickable) -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/scoreboardCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -130,8 +140,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:src="@drawable/facebook_ic" />
 
                     <TextView
@@ -140,7 +150,7 @@
                         android:layout_marginTop="8dp"
                         android:text="Manchester United FC"
                         android:textAlignment="center"
-                        android:textColor="#333333"
+                        android:textColor="#37003C"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -155,16 +165,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:background="#EEEEEE"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
+                        android:background="#EFF1F3"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
                         android:text="4-2-3-1"
                         android:textColor="#333333"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Score -->
+                <!-- Score (Reduced size) -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -175,32 +185,35 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:background="#37003C"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1"
-                            android:textColor="#333333"
-                            android:textSize="36sp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="28sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
                             android:text="-"
-                            android:textColor="#333333"
-                            android:textSize="36sp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="28sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1"
-                            android:textColor="#333333"
-                            android:textSize="36sp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="28sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -210,7 +223,8 @@
                         android:layout_marginTop="8dp"
                         android:text="Hiệp 1: 1 - 0"
                         android:textColor="#666666"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- Away Team -->
@@ -222,8 +236,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:src="@drawable/x_ic" />
 
                     <TextView
@@ -232,7 +246,7 @@
                         android:layout_marginTop="8dp"
                         android:text="Southampton FC"
                         android:textAlignment="center"
-                        android:textColor="#333333"
+                        android:textColor="#37003C"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -247,9 +261,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:background="#EEEEEE"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
+                        android:background="#EFF1F3"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
                         android:text="4-4-2"
                         android:textColor="#333333"
                         android:textSize="12sp"
@@ -258,13 +272,72 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Match Details (Initially Gone, will be shown when score is clicked) -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/matchDetailsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:visibility="gone"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Chi tiết trận đấu"
+                    android:textColor="#37003C"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Xếp hạng hiện tại: MU (6), Southampton (11)"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Đội hình ra sân Manchester United: De Gea, Dalot, Varane, Maguire, Shaw, McTominay, Pogba, Sancho, Fernandes, Rashford, Ronaldo"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Đội hình ra sân Southampton: Forster, Walker-Peters, Bednarek, Salisu, Perraud, S. Armstrong, Ward-Prowse, Romeu, Elyounoussi, Adams, Broja"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Tổng kết: Manchester United tiếp tục thể hiện phong độ không ổn định, để Southampton cầm hòa trên sân nhà Old Trafford."
+                    android:textColor="#333333"
+                    android:textStyle="italic"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- Goal Events -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -277,7 +350,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="Diễn biến trận đấu"
-                    android:textColor="#38003C"
+                    android:textColor="#37003C"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -286,13 +359,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
+                    android:background="#FEF5E7"
+                    android:padding="8dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="21'"
-                        android:textColor="#333333"
+                        android:textColor="#FF6900"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -314,7 +389,8 @@
                             android:layout_height="wrap_content"
                             android:text="Jadon Sancho (Manchester United)"
                             android:textColor="#333333"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -335,13 +411,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:background="#F1F8E9"
+                    android:padding="8dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="48'"
-                        android:textColor="#333333"
+                        android:textColor="#4CAF50"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -363,7 +441,8 @@
                             android:layout_height="wrap_content"
                             android:text="Che Adams (Southampton)"
                             android:textColor="#333333"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -381,8 +460,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -395,7 +474,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="Thống kê trận đấu"
-                    android:textColor="#38003C"
+                    android:textColor="#37003C"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -417,7 +496,7 @@
                             android:layout_weight="1"
                             android:text="51%"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -436,7 +515,7 @@
                             android:layout_weight="1"
                             android:text="49%"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -451,13 +530,13 @@
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="51"
-                            android:background="#DA291C" />
+                            android:background="#DB0030" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="49"
-                            android:background="#D71920" />
+                            android:background="#00529B" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -479,7 +558,7 @@
                             android:layout_weight="1"
                             android:text="8"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -498,7 +577,7 @@
                             android:layout_weight="1"
                             android:text="12"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -513,13 +592,13 @@
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="8"
-                            android:background="#DA291C" />
+                            android:background="#DB0030" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="12"
-                            android:background="#D71920" />
+                            android:background="#00529B" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -541,7 +620,7 @@
                             android:layout_weight="1"
                             android:text="7"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -560,7 +639,7 @@
                             android:layout_weight="1"
                             android:text="4"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -575,17 +654,15 @@
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="7"
-                            android:background="#DA291C" />
+                            android:background="#DB0030" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="4"
-                            android:background="#D71920" />
+                            android:background="#00529B" />
                     </LinearLayout>
                 </LinearLayout>
-
-                <!-- More statistics can be added in the same pattern -->
 
                 <!-- Yellow Cards -->
                 <LinearLayout
@@ -605,7 +682,7 @@
                             android:layout_weight="1"
                             android:text="4"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -624,7 +701,7 @@
                             android:layout_weight="1"
                             android:text="0"
                             android:textAlignment="center"
-                            android:textColor="#333333"
+                            android:textColor="#37003C"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -639,13 +716,13 @@
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="4"
-                            android:background="#DA291C" />
+                            android:background="#FFEB3B" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="16dp"
                             android:layout_weight="0"
-                            android:background="#D71920" />
+                            android:background="#00529B" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

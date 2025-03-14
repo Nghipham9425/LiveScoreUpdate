@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.*;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.sinhvien.livescore.FireBase.FirebaseHelper;
 import com.sinhvien.livescore.Models.Match;
 import com.sinhvien.livescore.Adapters.MatchAdapter;
@@ -35,7 +36,13 @@ public class HomeFragment extends Fragment {
         firebaseHelper = new FirebaseHelper();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        matchAdapter = new MatchAdapter(getContext(), matchList);
+
+        // ✅ Lấy uid, nếu chưa đăng nhập thì uid = ""
+        String uid = (FirebaseAuth.getInstance().getCurrentUser() != null) ?
+                FirebaseAuth.getInstance().getCurrentUser().getUid() : "";
+
+        // ✅ Truyền uid vào MatchAdapter
+        matchAdapter = new MatchAdapter(getContext(), matchList, uid);
         recyclerView.setAdapter(matchAdapter);
 
         setupSpinner();
@@ -77,7 +84,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (matchAdapter != null) {
-                    matchAdapter.filterMatches(s.toString().trim()); // Kiểm tra null trước khi gọi
+                    matchAdapter.filterMatches(s.toString().trim());
                 }
             }
 
