@@ -1,25 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#F5F5F5">
+    tools:context=".Fragments.StandingsFragment">
 
-    <!-- Dropdown chọn giải đấu -->
+    <!-- Chọn giải đấu -->
     <Spinner
-        android:id="@+id/spinnerLeague"
+        android:id="@+id/leagueSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/editbox_background"
-        android:padding="8dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_margin="8dp"
+        android:background="@drawable/spinner_background"
+        android:padding="12dp" />
 
-    <!-- RecyclerView hiển thị bảng xếp hạng -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewStandings"
+    <!-- Tiêu đề của các cột -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:background="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@color/header_background">
+
+        <!-- Vị trí -->
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="#"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/header_text" />
+
+        <!-- Logo -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="0dp" />
+
+        <!-- Đội -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Đội"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingStart="8dp"
+            android:textColor="@color/header_text" />
+
+        <!-- Thắng -->
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="T"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/header_text" />
+
+        <!-- Hòa -->
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="H"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/header_text" />
+
+        <!-- Thua -->
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="B"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/header_text" />
+
+        <!-- Điểm -->
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="Đ"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/header_text" />
+    </LinearLayout>
+
+    <!-- Danh sách bảng xếp hạng -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewStandings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_standing" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -1,0 +1,6 @@
+<!-- res/drawable/bg_rank_relegation.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#D32F2F" /> <!-- Red for relegation -->
+    <corners android:radius="4dp" />
+</shape>

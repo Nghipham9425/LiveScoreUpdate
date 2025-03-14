@@ -121,6 +121,46 @@
                         android:src="@drawable/light_ic" />
                 </FrameLayout>
             </LinearLayout>
+            <!-- Social Media Icons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="24dp">
+
+                <!-- Instagram Icon -->
+                <ImageView
+                    android:id="@+id/imgInstagram"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Instagram"
+                    android:src="@drawable/ins_ic"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <!-- Facebook Icon -->
+                <ImageView
+                    android:id="@+id/imgFacebook"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Facebook"
+                    android:src="@drawable/facebook_ic"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <!-- X (Twitter) Icon -->
+                <ImageView
+                    android:id="@+id/imgTwitter"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="X"
+                    android:src="@drawable/x_ic"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
 
             <!-- Logout Button -->
             <com.google.android.material.button.MaterialButton

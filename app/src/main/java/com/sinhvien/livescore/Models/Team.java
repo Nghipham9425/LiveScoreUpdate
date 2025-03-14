@@ -1,46 +1,32 @@
 package com.sinhvien.livescore.Models;
 
-import com.google.firebase.firestore.PropertyName;
-
 public class Team {
-    private int id;
     private String name;
-    private String shortName;
-    private String tla;
-
-    @PropertyName("crestUrl")
-    private String crest; // Firebase sẽ ánh xạ "crestUrl" vào biến "crest"
+    private String crestUrl;
 
     public Team() {
+        // Required empty constructor for Firestore
     }
 
-    public Team(int id, String name, String shortName, String tla, String crest) {
-        this.id = id;
+    public Team(String name, String crestUrl) {
         this.name = name;
-        this.shortName = shortName;
-        this.tla = tla;
-        this.crest = crest;
+        this.crestUrl = crestUrl;
     }
 
-    public int getId() {
-        return id;
-    }
-
+    // Getters and setters
     public String getName() {
         return name;
     }
 
-    public String getShortName() {
-        return shortName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTla() {
-        return tla;
-    }
-
-    @PropertyName("crestUrl")
     public String getCrest() {
-        return crest;
+        return crestUrl;
+    }
+
+    public void setCrest(String crestUrl) {
+        this.crestUrl = crestUrl;
     }
 }
-

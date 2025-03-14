@@ -14,13 +14,13 @@ import java.util.*;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
     private final Context context;
-    private final List<Match> originalMatches; // Danh sách gốc
-    private List<Match> filteredMatches; // Danh sách đã lọc
+    private List<Match> matchList;   // Danh sách gốc
+    private List<Match> filteredList; // Danh sách đã lọc
 
     public MatchAdapter(Context context, List<Match> matches) {
         this.context = context;
-        this.originalMatches = new ArrayList<>(matches);
-        this.filteredMatches = new ArrayList<>(matches);
+        this.matchList = new ArrayList<>(matches);
+        this.filteredList = new ArrayList<>(matches); // Sao chép danh sách gốc
     }
 
     @NonNull
@@ -32,60 +32,62 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
-        Match match = filteredMatches.get(position);
+        Match match = filteredList.get(position);
 
         holder.tvCompetition.setText(match.getCompetition());
-        holder.tvScore.setText(match.getScore());
+        holder.tvScore.setText(match.getScore() != null ? match.getScore() : "-");
         holder.tvHomeTeam.setText(match.getHomeTeam().getName());
         holder.tvAwayTeam.setText(match.getAwayTeam().getName());
         holder.tvTime.setText(match.getMatchTime());
-        holder.tvStatus.setText(match.getStatus());
 
+        // Load hình ảnh logo đội bóng
         Glide.with(context).load(match.getHomeTeam().getCrest()).into(holder.ivHomeTeam);
         Glide.with(context).load(match.getAwayTeam().getCrest()).into(holder.ivAwayTeam);
 
+        // Cập nhật trạng thái trận đấu
+        int color;
         switch (match.getStatus().toUpperCase()) {
             case "LIVE":
-                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_live));
-                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                color = R.color.status_live;
                 break;
             case "FINISHED":
-                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_finished));
-                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                color = R.color.status_finished;
                 break;
             case "UPCOMING":
-                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_upcoming));
-                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                color = R.color.status_upcoming;
                 break;
             default:
-                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.status_default));
-                holder.tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.black));
+                color = R.color.status_default;
                 break;
         }
+        holder.tvStatus.setBackgroundColor(ContextCompat.getColor(context, color));
+        holder.tvStatus.setText(match.getStatus());
     }
 
     @Override
     public int getItemCount() {
-        return filteredMatches.size();
+        return filteredList.size();
     }
 
-    // 🔥 Cập nhật toàn bộ danh sách trận đấu
+    // Cập nhật danh sách trận đấu mới
     public void updateData(List<Match> newMatches) {
-        originalMatches.clear();
-        originalMatches.addAll(newMatches);
-        filterMatches(""); // Giữ nguyên danh sách nếu không có filter
+        this.matchList = new ArrayList<>(newMatches);
+        this.filteredList = new ArrayList<>(newMatches);
+        notifyDataSetChanged();
     }
 
-    // 🔍 Lọc danh sách trận đấu theo tên đội bóng
+    // ✅ Thêm chức năng lọc trận đấu
     public void filterMatches(String query) {
-        filteredMatches.clear();
+        query = query.toLowerCase().trim();
+        filteredList.clear();
+
         if (query.isEmpty()) {
-            filteredMatches.addAll(originalMatches);
+            filteredList.addAll(matchList);
         } else {
-            for (Match match : originalMatches) {
-                if (match.getHomeTeam().getName().toLowerCase().contains(query.toLowerCase()) ||
-                        match.getAwayTeam().getName().toLowerCase().contains(query.toLowerCase())) {
-                    filteredMatches.add(match);
+            for (Match match : matchList) {
+                if (match.getHomeTeam().getName().toLowerCase().contains(query) ||
+                        match.getAwayTeam().getName().toLowerCase().contains(query)) {
+                    filteredList.add(match);
                 }
             }
         }

@@ -24,7 +24,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="fitCenter"
-        android:background="@color/gray" />
+        android:background="@color/white" />
 
     <!-- Tên đội bóng -->
     <TextView

@@ -13,12 +13,10 @@ public class Standing {
     private int goalsAgainst;
     private int goalDifference;
 
-    // Constructor mặc định để Firebase sử dụng
-    public Standing() {
-    }
+    public Standing(){}
 
-    // Constructor có tham số (dùng cho việc tạo đối tượng từ API)
-    public Standing(int position, Team team, int playedGames, String form, int won, int draw, int lost, int points, int goalsFor, int goalsAgainst, int goalDifference) {
+    public Standing(int position, Team team, int playedGames, String form, int won, int draw, int lost,
+                    int points, int goalsFor, int goalsAgainst, int goalDifference) {
         this.position = position;
         this.team = team;
         this.playedGames = playedGames;
@@ -32,48 +30,14 @@ public class Standing {
         this.goalDifference = goalDifference;
     }
 
-    // Getter methods
-    public int getPosition() {
-        return position;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public int getPlayedGames() {
-        return playedGames;
-    }
-
-    public String getForm() {
-        return form;
-    }
-
-    public int getWon() {
-        return won;
-    }
-
-    public int getDraw() {
-        return draw;
-    }
-
-    public int getLost() {
-        return lost;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public int getGoalsFor() {
-        return goalsFor;
-    }
-
-    public int getGoalsAgainst() {
-        return goalsAgainst;
-    }
-
-    public int getGoalDifference() {
-        return goalDifference;
-    }
+    public int getPosition() { return position; }
+    public Team getTeam() { return team; }
+    public int getPlayedGames() { return playedGames; }
+    public int getWon() { return won; }
+    public int getDraw() { return draw; }
+    public int getLost() { return lost; }
+    public int getPoints() { return points; }
+    public int getGoalsFor() { return goalsFor; }
+    public int getGoalsAgainst() { return goalsAgainst; }
+    public int getGoalDifference() { return goalDifference; }
 }

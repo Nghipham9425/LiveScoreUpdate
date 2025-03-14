@@ -14,13 +14,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sinhvien.livescore.Models.Match;
 import com.sinhvien.livescore.Models.Standing;
 import com.sinhvien.livescore.FireBase.FirebaseHelper;
+import com.sinhvien.livescore.Models.Team;
 import com.sinhvien.livescore.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
@@ -44,56 +47,22 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
 
-        executorService.execute(this::fetchAllMatchData);
-        executorService.execute(this::fetchAllStandings);
-    }
-
-    private void fetchAllMatchData() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        for (String tournament : TOURNAMENTS) {
-            fetchMatchData(queue, tournament);
-        }
-    }
-
-    private void fetchMatchData(RequestQueue queue, String tournament) {
-        String url = "https://api.football-data.org/v4/competitions/" + tournament + "/matches";
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET, url, null,
-                response -> {
-                    List<Match> matches = parseMatchResponse(response);
-                    for (Match match : matches) {
-                        firebaseHelper.saveOrUpdateMatch(match);
-                    }
-                },
-                error -> Log.e("API_ERROR", "Error fetching API: " + error.toString())
-        ) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("X-Auth-Token", API_TOKEN);
-                return headers;
-            }
-        };
-        queue.add(request);
-    }
-
-    private List<Match> parseMatchResponse(JSONObject response) {
-        List<Match> matches = new ArrayList<>();
-        // 📝 Code xử lý JSON...
-        return matches;
+        executorService.execute(() -> {
+            fetchAllStandings();
+        });
     }
 
     private void fetchAllStandings() {
         RequestQueue queue = Volley.newRequestQueue(this);
         for (String tournament : TOURNAMENTS) {
-            fetchStandingsData(queue, tournament);
+            firebaseHelper.shouldUpdateStandings(tournament, () -> fetchStandingsData(queue, tournament));
         }
     }
 
+
     private void fetchStandingsData(RequestQueue queue, String tournament) {
         String url = "https://api.football-data.org/v4/competitions/" + tournament + "/standings";
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET, url, null,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     List<Standing> standings = parseStandingsResponse(response);
                     firebaseHelper.saveStandings(tournament, standings);
@@ -112,7 +81,33 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Standing> parseStandingsResponse(JSONObject response) {
         List<Standing> standings = new ArrayList<>();
-        // 📝 Code xử lý JSON để lấy danh sách bảng xếp hạng
+        try {
+            JSONArray standingsArray = response.getJSONArray("standings");
+            for (int i = 0; i < standingsArray.length(); i++) {
+                JSONArray tableArray = standingsArray.getJSONObject(i).getJSONArray("table");
+                for (int j = 0; j < tableArray.length(); j++) {
+                    JSONObject teamObj = tableArray.getJSONObject(j);
+                    int position = teamObj.getInt("position");
+                    int playedGames = teamObj.getInt("playedGames");
+                    int won = teamObj.getInt("won");
+                    int draw = teamObj.getInt("draw");
+                    int lost = teamObj.getInt("lost");
+                    int points = teamObj.getInt("points");
+                    int goalsFor = teamObj.getInt("goalsFor");
+                    int goalsAgainst = teamObj.getInt("goalsAgainst");
+                    int goalDifference = teamObj.getInt("goalDifference");
+
+                    JSONObject teamInfo = teamObj.getJSONObject("team");
+                    Team team = new Team(teamInfo.getString("name"), teamInfo.getString("crest"));
+
+                    Standing standing = new Standing(position, team, playedGames, "",
+                            won, draw, lost, points, goalsFor, goalsAgainst, goalDifference);
+                    standings.add(standing);
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("JSON_PARSE", "Error parsing standings data: " + e.toString());
+        }
         return standings;
     }
 }
