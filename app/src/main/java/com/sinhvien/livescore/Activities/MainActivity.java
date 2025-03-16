@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         executorService.execute(() -> {
             fetchAllStandings();
+            fetchAllMatches();
         });
     }
 
@@ -59,6 +60,108 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void fetchAllMatches() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        for (String tournament : TOURNAMENTS) {
+            firebaseHelper.shouldUpdateMatches(tournament, () -> fetchMatchesData(queue, tournament));
+        }
+    }
+
+    private void fetchMatchesData(RequestQueue queue, String tournament) {
+        String url = "https://api.football-data.org/v4/competitions/" + tournament + "/matches";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<Match> matches = parseMatchesResponse(response, tournament);
+                    firebaseHelper.saveMatches(tournament, matches);
+                },
+                error -> Log.e("API_ERROR", "Error fetching matches: " + error.toString())
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("X-Auth-Token", API_TOKEN);
+                return headers;
+            }
+        };
+        queue.add(request);
+    }
+
+    private List<Match> parseMatchesResponse(JSONObject response, String tournament) {
+        List<Match> matches = new ArrayList<>();
+        try {
+            JSONArray matchesArray = response.getJSONArray("matches");
+            for (int i = 0; i < matchesArray.length(); i++) {
+                JSONObject matchObj = matchesArray.getJSONObject(i);
+
+                String matchId = matchObj.getString("id");
+                String status = getMatchStatus(matchObj.getString("status"));
+                String score = getScoreString(matchObj.getJSONObject("score"));
+                String matchTime = matchObj.getString("utcDate");
+
+                // Get home team data
+                JSONObject homeTeamObj = matchObj.getJSONObject("homeTeam");
+                Team homeTeam = new Team(
+                        homeTeamObj.getString("name"),
+                        homeTeamObj.getString("crest")
+                );
+
+                // Get away team data
+                JSONObject awayTeamObj = matchObj.getJSONObject("awayTeam");
+                Team awayTeam = new Team(
+                        awayTeamObj.getString("name"),
+                        awayTeamObj.getString("crest")
+                );
+
+                Match match = new Match(
+                        matchId,
+                        status,
+                        tournament,
+                        score,
+                        matchTime,
+                        homeTeam,
+                        awayTeam,
+                        false  // Default favorite status is false
+                );
+
+                matches.add(match);
+            }
+        } catch (JSONException e) {
+            Log.e("JSON_PARSE", "Error parsing matches data: " + e.toString());
+        }
+        return matches;
+    }
+
+    private String getMatchStatus(String apiStatus) {
+        switch (apiStatus) {
+            case "SCHEDULED":
+                return "UPCOMING";
+            case "LIVE":
+            case "IN_PLAY":
+            case "PAUSED":
+                return "LIVE";
+            case "FINISHED":
+            case "COMPLETED":
+                return "FINISHED";
+            default:
+                return "UPCOMING";
+        }
+    }
+
+    private String getScoreString(JSONObject scoreObj) {
+        try {
+            if (scoreObj.has("fullTime")) {
+                JSONObject fullTime = scoreObj.getJSONObject("fullTime");
+                if (!fullTime.isNull("home") && !fullTime.isNull("away")) {
+                    int home = fullTime.getInt("home");
+                    int away = fullTime.getInt("away");
+                    return home + " - " + away;
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("JSON_PARSE", "Error parsing score: " + e.toString());
+        }
+        return null;
+    }
 
     private void fetchStandingsData(RequestQueue queue, String tournament) {
         String url = "https://api.football-data.org/v4/competitions/" + tournament + "/standings";

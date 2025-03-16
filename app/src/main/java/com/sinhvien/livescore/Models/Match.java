@@ -1,31 +1,44 @@
 package com.sinhvien.livescore.Models;
 
-import java.util.Objects;
-
 public class Match {
     private String matchId;
-    private String competition;
-    private String matchTime;
-    private String score;
     private String status;
+    private String competition;
+    private String score;
+    private String matchTime;
     private Team homeTeam;
     private Team awayTeam;
+    private boolean isFavorite; // Added isFavorite field
 
-    private boolean isFavorite;
-
+    // Thêm vào lớp Match
     public Match() {
-        // Required empty constructor for Firestore
+        // Constructor trống cần thiết cho Firestore
+        this.isFavorite = false; // Giá trị mặc định
     }
-
-    public Match(String matchId, String competition, String matchTime, String score,
-                 String status, Team homeTeam, Team awayTeam) {
+    // Original constructor
+    public Match(String matchId, String status, String competition, String score,
+                 String matchTime, Team homeTeam, Team awayTeam) {
         this.matchId = matchId;
-        this.competition = competition;
-        this.matchTime = matchTime;
-        this.score = score;
         this.status = status;
+        this.competition = competition;
+        this.score = score;
+        this.matchTime = matchTime;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        this.isFavorite = false; // Default value
+    }
+
+    // New constructor with isFavorite parameter
+    public Match(String matchId, String status, String competition, String score,
+                 String matchTime, Team homeTeam, Team awayTeam, boolean isFavorite) {
+        this.matchId = matchId;
+        this.status = status;
+        this.competition = competition;
+        this.score = score;
+        this.matchTime = matchTime;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.isFavorite = isFavorite;
     }
 
     // Getters and setters
@@ -37,20 +50,20 @@ public class Match {
         this.matchId = matchId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getCompetition() {
         return competition;
     }
 
     public void setCompetition(String competition) {
         this.competition = competition;
-    }
-
-    public String getMatchTime() {
-        return matchTime;
-    }
-
-    public void setMatchTime(String matchTime) {
-        this.matchTime = matchTime;
     }
 
     public String getScore() {
@@ -61,12 +74,12 @@ public class Match {
         this.score = score;
     }
 
-    public String getStatus() {
-        return status;
+    public String getMatchTime() {
+        return matchTime;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setMatchTime(String matchTime) {
+        this.matchTime = matchTime;
     }
 
     public Team getHomeTeam() {
@@ -84,6 +97,12 @@ public class Match {
     public void setAwayTeam(Team awayTeam) {
         this.awayTeam = awayTeam;
     }
-    public boolean isFavorite() { return isFavorite; }
-    public void setFavorite(boolean favorite) { isFavorite = favorite; }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 }
