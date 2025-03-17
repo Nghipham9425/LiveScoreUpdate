@@ -1,5 +1,7 @@
 package com.sinhvien.livescore.Models;
 
+import com.sinhvien.livescore.Utils.DateTimeUtils;
+
 public class Match {
     private String matchId;
     private String status;
@@ -104,5 +106,8 @@ public class Match {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+    public String getFormattedTime() {
+        return DateTimeUtils.formatMatchTime(matchTime);
     }
 }

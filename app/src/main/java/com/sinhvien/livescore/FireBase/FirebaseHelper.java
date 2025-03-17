@@ -203,30 +203,71 @@ public class FirebaseHelper {
     }
 
     public void saveMatches(String tournament, List<Match> matches) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         String tournamentCode = convertCompetitionNameToCode(tournament);
 
-        // Tạo document cho metadata của giải đấu
+        // Get existing match IDs to determine which ones need to be updated
+        db.collection(MATCHES_COLLECTION)
+                .whereEqualTo("competition", tournamentCode)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    // Create a map of existing matches for quick lookup
+                    Map<String, Match> existingMatches = new HashMap<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        Match match = doc.toObject(Match.class);
+                        if (match != null) {
+                            existingMatches.put(match.getMatchId(), match);
+                        }
+                    }
+
+                    // Track new and updated matches
+                    List<Match> matchesToSave = new ArrayList<>();
+
+                    for (Match newMatch : matches) {
+                        Match existingMatch = existingMatches.get(newMatch.getMatchId());
+                        newMatch.setCompetition(tournamentCode);
+
+                        // Add to save list if match is new or status/score has changed
+                        if (existingMatch == null ||
+                                !existingMatch.getStatus().equals(newMatch.getStatus()) ||
+                                !Objects.equals(existingMatch.getScore(), newMatch.getScore())) {
+                            matchesToSave.add(newMatch);
+                        }
+                    }
+
+                    // Only update metadata if we have matches to save
+                    if (!matchesToSave.isEmpty()) {
+                        saveMatchBatches(matchesToSave, tournamentCode);
+                    } else {
+                        Log.d("Firebase", "No matches need updating for " + tournamentCode);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // In case of failure, save all matches to be safe
+                    for (Match match : matches) {
+                        match.setCompetition(tournamentCode);
+                    }
+                    saveMatchBatches(matches, tournamentCode);
+                });
+    }
+
+    private void saveMatchBatches(List<Match> matches, String tournamentCode) {
+        // Update tournament metadata
         Map<String, Object> tournamentData = new HashMap<>();
-        tournamentData.put("lastUpdated", FieldValue.serverTimestamp()); // Server timestamp instead of new Date()
+        tournamentData.put("lastUpdated", FieldValue.serverTimestamp());
         tournamentData.put("matchCount", matches.size());
 
         db.collection("tournaments").document(tournamentCode)
                 .set(tournamentData)
-                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Lưu metadata giải đấu thành công"))
-                .addOnFailureListener(e -> Log.e("Firebase", "Lỗi khi lưu metadata", e));
+                .addOnFailureListener(e -> Log.e("Firebase", "Error saving tournament metadata", e));
 
-        // Sử dụng nhiều transaction nhỏ thay vì một batch lớn để tránh vượt quá giới hạn
-        int batchSize = 20; // Firestore có giới hạn 500 operations/batch
-
+        // Save matches in batches
+        int batchSize = 20;
         for (int i = 0; i < matches.size(); i += batchSize) {
             int endIndex = Math.min(i + batchSize, matches.size());
             WriteBatch batch = db.batch();
 
             for (int j = i; j < endIndex; j++) {
                 Match match = matches.get(j);
-                match.setCompetition(tournamentCode);
-
                 DocumentReference matchRef = db.collection(MATCHES_COLLECTION).document(match.getMatchId());
                 batch.set(matchRef, match);
             }
@@ -234,14 +275,61 @@ public class FirebaseHelper {
             int finalI = i;
             batch.commit()
                     .addOnSuccessListener(aVoid ->
-                            Log.d("Firebase", "Batch " + (finalI / batchSize + 1) + " lưu thành công"))
+                            Log.d("Firebase", "Batch " + (finalI / batchSize + 1) +
+                                    " saved with " + Math.min(batchSize, matches.size() - finalI) + " matches"))
                     .addOnFailureListener(e ->
-                            Log.e("Firebase", "Lỗi khi lưu batch " + (finalI / batchSize + 1), e));
+                            Log.e("Firebase", "Error saving batch " + (finalI / batchSize + 1), e));
         }
     }
 
     public void saveStandings(String tournamentId, List<Standing> standings) {
         String tournamentCode = convertCompetitionNameToCode(tournamentId);
+
+        // Get current standings to check if update is needed
+        db.collection(STANDINGS_COLLECTION).document(tournamentCode)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    boolean needsUpdate = true;
+
+                    if (doc.exists()) {
+                        List<Map<String, Object>> currentStandings = (List<Map<String, Object>>) doc.get("standings");
+                        if (currentStandings != null && currentStandings.size() == standings.size()) {
+                            needsUpdate = hasStandingsChanged(currentStandings, standings);
+                        }
+                    }
+
+                    if (needsUpdate) {
+                        Log.d("STANDINGS_DEBUG", "Updating standings for " + tournamentCode);
+                        writeStandings(tournamentCode, standings);
+                    } else {
+                        Log.d("STANDINGS_DEBUG", "No changes in standings for " + tournamentCode + ", skipping update");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("STANDINGS_DEBUG", "Error checking standings, forcing update", e);
+                    writeStandings(tournamentCode, standings);
+                });
+    }
+
+    private boolean hasStandingsChanged(List<Map<String, Object>> currentStandings, List<Standing> newStandings) {
+        for (int i = 0; i < newStandings.size(); i++) {
+            Standing newStanding = newStandings.get(i);
+            Map<String, Object> currentStanding = currentStandings.get(i);
+
+            // Check if key values have changed
+            if (!Objects.equals(currentStanding.get("position"), newStanding.getPosition()) ||
+                    !Objects.equals(currentStanding.get("points"), newStanding.getPoints()) ||
+                    !Objects.equals(currentStanding.get("playedGames"), newStanding.getPlayedGames()) ||
+                    !Objects.equals(currentStanding.get("won"), newStanding.getWon()) ||
+                    !Objects.equals(currentStanding.get("draw"), newStanding.getDraw()) ||
+                    !Objects.equals(currentStanding.get("lost"), newStanding.getLost())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void writeStandings(String tournamentCode, List<Standing> standings) {
         List<Map<String, Object>> standingsList = new ArrayList<>();
 
         for (Standing standing : standings) {
@@ -263,58 +351,70 @@ public class FirebaseHelper {
 
         Map<String, Object> standingsData = new HashMap<>();
         standingsData.put("standings", standingsList);
-        // Use server timestamp instead of Date
         standingsData.put("lastUpdated", FieldValue.serverTimestamp());
 
         db.collection(STANDINGS_COLLECTION).document(tournamentCode)
                 .set(standingsData)
-                .addOnSuccessListener(aVoid -> Log.d("FIRESTORE", "Standings saved successfully"))
-                .addOnFailureListener(e -> Log.e("FIRESTORE", "Error saving standings", e));
+                .addOnSuccessListener(aVoid ->
+                        Log.d("STANDINGS_DEBUG", "Standings saved for " + tournamentCode))
+                .addOnFailureListener(e ->
+                        Log.e("STANDINGS_DEBUG", "Error saving standings for " + tournamentCode, e));
     }
 
     public void shouldUpdateStandings(String tournamentId, Runnable onUpdateNeeded) {
         String tournamentCode = convertCompetitionNameToCode(tournamentId);
+        Log.d("STANDINGS_DEBUG", "Checking if update needed for: " + tournamentCode);
 
         db.collection(STANDINGS_COLLECTION).document(tournamentCode).get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        // Handle different possible formats of lastUpdated
-                        Object lastUpdatedObj = documentSnapshot.get("lastUpdated");
-                        boolean isStale = true;
+                    if (!documentSnapshot.exists()) {
+                        Log.d("STANDINGS_DEBUG", "No standings document exists for: " + tournamentCode + ", updating...");
+                        onUpdateNeeded.run();
+                        return;
+                    }
 
-                        if (lastUpdatedObj != null) {
-                            Date lastUpdated = null;
+                    // Handle different possible formats of lastUpdated
+                    Object lastUpdatedObj = documentSnapshot.get("lastUpdated");
+                    Log.d("STANDINGS_DEBUG", "Last updated object: " + (lastUpdatedObj != null ? lastUpdatedObj.getClass().getName() : "null"));
 
-                            // Check if it's a Timestamp
-                            if (lastUpdatedObj instanceof Timestamp) {
-                                lastUpdated = ((Timestamp) lastUpdatedObj).toDate();
-                            }
-                            // Check if it's already a Date (shouldn't happen, but just in case)
-                            else if (lastUpdatedObj instanceof Date) {
-                                lastUpdated = (Date) lastUpdatedObj;
-                            }
-                            // Handle String or other formats if needed
+                    if (lastUpdatedObj == null) {
+                        Log.d("STANDINGS_DEBUG", "No lastUpdated timestamp, forcing update for: " + tournamentCode);
+                        onUpdateNeeded.run();
+                        return;
+                    }
 
-                            if (lastUpdated != null) {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.add(Calendar.HOUR, -12);
-                                if (lastUpdated.after(calendar.getTime())) {
-                                    // Data is less than 12 hours old
-                                    Log.d("FIRESTORE", "Standings data is recent, no update needed.");
-                                    isStale = false;
-                                }
-                            }
-                        }
+                    Date lastUpdated = null;
+                    if (lastUpdatedObj instanceof Timestamp) {
+                        lastUpdated = ((Timestamp) lastUpdatedObj).toDate();
+                    } else if (lastUpdatedObj instanceof Date) {
+                        lastUpdated = (Date) lastUpdatedObj;
+                    }
 
-                        if (isStale) {
-                            onUpdateNeeded.run();
-                        }
+                    if (lastUpdated == null) {
+                        Log.d("STANDINGS_DEBUG", "Couldn't parse lastUpdated timestamp, forcing update for: " + tournamentCode);
+                        onUpdateNeeded.run();
+                        return;
+                    }
+
+                    // Calculate if data is stale (older than 2 hours for testing)
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.HOUR, -2); // Reduced from 12 to 2 hours for testing
+                    boolean isStale = lastUpdated.before(calendar.getTime());
+
+                    Log.d("STANDINGS_DEBUG", "Standings for " + tournamentCode +
+                            " last updated at: " + lastUpdated +
+                            ", isStale: " + isStale);
+
+                    if (isStale) {
+                        Log.d("STANDINGS_DEBUG", "Standings data is stale, updating for: " + tournamentCode);
+                        onUpdateNeeded.run();
                     } else {
-                        onUpdateNeeded.run(); // Document doesn't exist
+                        Log.d("STANDINGS_DEBUG", "Standings data is recent, no update needed for: " + tournamentCode);
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("FIRESTORE", "Error checking update time", e);
+                    Log.e("STANDINGS_DEBUG", "Error checking update time for " + tournamentCode, e);
+                    Log.d("STANDINGS_DEBUG", "Running update due to Firestore error");
                     onUpdateNeeded.run(); // Call API on error to be safe
                 });
     }

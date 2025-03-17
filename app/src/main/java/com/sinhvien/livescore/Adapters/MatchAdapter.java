@@ -62,7 +62,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         holder.tvScore.setText(match.getScore() != null ? match.getScore() : "-");
         holder.tvHomeTeam.setText(match.getHomeTeam().getName());
         holder.tvAwayTeam.setText(match.getAwayTeam().getName());
-        holder.tvTime.setText(match.getMatchTime());
+        holder.tvTime.setText(match.getFormattedTime());
 
         Glide.with(context).load(match.getHomeTeam().getCrest()).into(holder.ivHomeTeam);
         Glide.with(context).load(match.getAwayTeam().getCrest()).into(holder.ivAwayTeam);

@@ -74,7 +74,20 @@
                     android:textColor="@android:color/white"
                     android:backgroundTint="@color/primary" />
             </LinearLayout>
+            <!-- Add after the Login & Join Now Buttons section and before Notifications Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUserInfo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="My Profile"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@android:color/black"
+                android:backgroundTint="@color/primary" />
 
+            <!-- Notifications Button follows after -->
             <!-- Notifications Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNotifications"

@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.sinhvien.livescore.Activities.LoginActivity;
+import com.sinhvien.livescore.Activities.UserInfoActivity;
 import com.sinhvien.livescore.R;
 import com.sinhvien.livescore.Activities.RegisterActivity;
 
@@ -23,6 +25,7 @@ public class SettingFragment extends Fragment {
     private FirebaseAuth mAuth;
     private TextView txtHello;
     private Button btnLogin, btnJoinNow, btnLogout, btnNotifications;
+    private MaterialButton btnUserInfo;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class SettingFragment extends Fragment {
         btnJoinNow = view.findViewById(R.id.btnJoinNow);
         btnLogout = view.findViewById(R.id.btnLogout);
         btnNotifications = view.findViewById(R.id.btnNotifications);
+        btnUserInfo = view.findViewById(R.id.btnUserInfo);
 
         updateUI();
 
@@ -48,6 +52,11 @@ public class SettingFragment extends Fragment {
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
             updateUI();
+        });
+
+        btnUserInfo.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -80,11 +89,13 @@ public class SettingFragment extends Fragment {
             btnLogout.setVisibility(View.VISIBLE);  // Show Logout button
             btnLogin.setVisibility(View.GONE);     // Hide Login button
             btnJoinNow.setVisibility(View.GONE);   // Hide Join Now button
+            btnUserInfo.setVisibility(View.VISIBLE); // Show User Info button when logged in
         } else {
             txtHello.setVisibility(View.GONE);
             btnLogout.setVisibility(View.GONE);   // Hide Logout button
             btnLogin.setVisibility(View.VISIBLE); // Show Login button
             btnJoinNow.setVisibility(View.VISIBLE); // Show Join Now button
+            btnUserInfo.setVisibility(View.GONE); // Hide User Info button when not logged in
         }
     }
 }
