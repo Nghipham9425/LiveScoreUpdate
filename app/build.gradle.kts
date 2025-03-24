@@ -50,6 +50,7 @@ dependencies {
     implementation (libs.cardview)
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
+    implementation ("androidx.core:core-splashscreen:1.0.1")
     // Networking
     implementation(libs.volley)
     implementation(libs.retrofit)
@@ -60,11 +61,13 @@ dependencies {
     // Glide for image loading
     implementation(libs.glide)
     implementation(libs.swiperefreshlayout)
+    implementation(libs.core.splashscreen)
     annotationProcessor(libs.compiler)
 
     // Navigation Component
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+
 
     // Testing
     testImplementation(libs.junit)

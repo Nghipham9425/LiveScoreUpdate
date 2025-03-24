@@ -1,30 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- App Theme -->
+    <style name="Theme.YourAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/primary_variant</item>
-        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimary">@color/modern_primary</item>
+        <item name="colorPrimaryVariant">@color/modern_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
 
         <!-- Secondary brand color -->
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary</item>
-        <item name="colorOnSecondary">@color/on_primary</item>
+        <item name="colorSecondary">@color/modern_secondary</item>
+        <item name="colorSecondaryVariant">@color/modern_secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
 
         <!-- Status bar color -->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/modern_primary_dark</item>
 
         <!-- Background colors -->
-        <item name="android:colorBackground">@color/background_light</item>
-        <item name="colorOnBackground">@color/on_background_light</item>
-        <item name="android:windowBackground">@color/background_light</item>
+        <item name="android:colorBackground">@color/modern_background</item>
+        <item name="colorOnBackground">@color/modern_text_primary</item>
+        <item name="android:windowBackground">@color/modern_background</item>
 
         <!-- Surface colors -->
-        <item name="colorSurface">@color/surface_light</item>
-        <item name="colorOnSurface">@color/on_surface_light</item>
-        <item name="colorBackground">@color/background_light</item>
+        <item name="colorSurface">@color/modern_surface</item>
+        <item name="colorOnSurface">@color/modern_text_primary</item>
+
         <!-- Text colors -->
-        <item name="android:textColorPrimary">@color/text_primary</item>
-        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorPrimary">@color/modern_text_primary</item>
+        <item name="android:textColorSecondary">@color/modern_text_secondary</item>
+
+        <!-- Elevation for components -->
+        <item name="cardElevation">4dp</item>
+
+        <!-- 🔥 FIX: Loại bỏ Splash mặc định của Android 12+ -->
+        <item name="android:windowSplashScreenBackground">@android:color/white</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@null</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
     </style>
 </resources>

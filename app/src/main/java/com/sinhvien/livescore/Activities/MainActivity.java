@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject homeTeamObj = matchObj.getJSONObject("homeTeam");
                 Team homeTeam = new Team(
                         homeTeamObj.getString("name"),
+                        homeTeamObj.getString("shortName"),
+                        homeTeamObj.getString("tla"),
                         homeTeamObj.getString("crest")
                 );
 
@@ -123,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject awayTeamObj = matchObj.getJSONObject("awayTeam");
                 Team awayTeam = new Team(
                         awayTeamObj.getString("name"),
+                        awayTeamObj.getString("shortName"),
+                        awayTeamObj.getString("tla"),
                         awayTeamObj.getString("crest")
                 );
 
@@ -215,7 +219,12 @@ public class MainActivity extends AppCompatActivity {
                     int goalDifference = teamObj.getInt("goalDifference");
 
                     JSONObject teamInfo = teamObj.getJSONObject("team");
-                    Team team = new Team(teamInfo.getString("name"), teamInfo.getString("crest"));
+                    Team team = new Team(
+                            teamInfo.getString("name"),
+                            teamInfo.getString("shortName"),
+                            teamInfo.getString("tla"),
+                            teamInfo.getString("crest")
+                    );
 
                     Standing standing = new Standing(position, team, playedGames, "",
                             won, draw, lost, points, goalsFor, goalsAgainst, goalDifference);

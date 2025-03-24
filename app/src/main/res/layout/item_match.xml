@@ -5,31 +5,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="6dp">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:contentPadding="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:orientation="vertical">
 
-        <!-- Dòng đầu: Tên giải đấu + Icon yêu thích -->
-        <LinearLayout
+        <!-- Phần header với nền gradient -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@drawable/match_header_gradient"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
 
             <!-- Tên giải đấu -->
             <TextView
                 android:id="@+id/tvCompetition"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/ivFavorite"
+                android:layout_marginEnd="8dp"
                 android:textAllCaps="true"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:ellipsize="end" />
@@ -37,99 +43,152 @@
             <!-- Nút yêu thích (trái tim) -->
             <ImageView
                 android:id="@+id/ivFavorite"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="4dp"
-                android:src="@drawable/ic_heart_bolder"
-                app:tint="@android:color/holo_red_dark"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-        </LinearLayout>
+                android:src="@drawable/ic_heart_bolder" />
+        </RelativeLayout>
 
-        <!-- Trạng thái trận đấu -->
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="6dp"
-            android:background="@drawable/status_bg"
-            android:gravity="center"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <!-- Layout chứa thông tin hai đội bóng -->
+        <!-- Phần chính trận đấu -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingVertical="8dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="16dp">
 
-            <!-- Logo đội nhà -->
-            <ImageView
-                android:id="@+id/ivHomeTeam"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:scaleType="fitCenter" />
-
-            <!-- Tên đội nhà -->
+            <!-- Trạng thái trận đấu -->
             <TextView
-                android:id="@+id/tvHomeTeam"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <!-- Tỉ số -->
-            <TextView
-                android:id="@+id/tvScore"
+                android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/status_rounded_bg"
                 android:gravity="center"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="5dp"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <!-- Tên đội khách -->
-            <TextView
-                android:id="@+id/tvAwayTeam"
-                android:layout_width="0dp"
+            <!-- Layout chứa thông tin hai đội bóng -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <!-- Logo đội khách -->
-            <ImageView
-                android:id="@+id/ivAwayTeam"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:scaleType="fitCenter" />
+                <!-- Đội nhà - Layout dọc với logo trên, tên dưới -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <!-- Logo đội nhà -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="2dp"
+                        android:layout_marginBottom="8dp">
+                        <ImageView
+                            android:id="@+id/ivHomeTeam"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:padding="4dp"
+                            android:scaleType="fitCenter" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Tên đội nhà -->
+                    <TextView
+                        android:id="@+id/tvHomeTeam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:maxLines="2"
+                        android:ellipsize="end" />
+                </LinearLayout>
+
+                <!-- Tỉ số -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="#F5F5F5"
+                    app:cardElevation="2dp">
+                    <TextView
+                        android:id="@+id/tvScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:minWidth="70dp"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="8dp"
+                        android:textColor="#212121"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
+
+                <!-- Đội khách - Layout dọc với logo trên, tên dưới -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <!-- Logo đội khách -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="2dp"
+                        android:layout_marginBottom="8dp">
+                        <ImageView
+                            android:id="@+id/ivAwayTeam"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:padding="4dp"
+                            android:scaleType="fitCenter" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Tên đội khách -->
+                    <TextView
+                        android:id="@+id/tvAwayTeam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:maxLines="2"
+                        android:ellipsize="end" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Thời gian trận đấu -->
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:drawableStart="@drawable/ic_clock"
+                android:drawablePadding="6dp"
+                android:textColor="#757575"
+                android:textSize="14sp" />
         </LinearLayout>
-
-        <!-- Thời gian trận đấu -->
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="6dp"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp"
-            android:textStyle="italic" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

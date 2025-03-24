@@ -60,8 +60,8 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
         holder.tvCompetition.setText(match.getCompetition());
         holder.tvScore.setText(match.getScore() != null ? match.getScore() : "-");
-        holder.tvHomeTeam.setText(match.getHomeTeam().getName());
-        holder.tvAwayTeam.setText(match.getAwayTeam().getName());
+        holder.tvHomeTeam.setText(match.getHomeTeam().getShortName() != null ? match.getHomeTeam().getShortName() : match.getHomeTeam().getName());
+        holder.tvAwayTeam.setText(match.getAwayTeam().getShortName() != null ? match.getAwayTeam().getShortName() : match.getAwayTeam().getName());
         holder.tvTime.setText(match.getFormattedTime());
 
         Glide.with(context).load(match.getHomeTeam().getCrest()).into(holder.ivHomeTeam);
@@ -88,7 +88,6 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         boolean isFavorite = favoriteMatches.contains(match.getMatchId());
         holder.ivFavorite.setImageResource(isFavorite ? R.drawable.ic_heart_fill : R.drawable.ic_heart_bolder);
 
-        // Xử lý sự kiện ấn vào trái tim
         holder.ivFavorite.setOnClickListener(v -> {
             if (uid == null || uid.isEmpty()) {
                 Toast.makeText(context, "Bạn cần đăng nhập để lưu yêu thích!", Toast.LENGTH_SHORT).show();
@@ -101,7 +100,6 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             }
         });
     }
-
     private void addFavorite(Match match, MatchViewHolder holder) {
         db.collection("Users").document(uid).collection("favorites")
                 .document(match.getMatchId())
@@ -164,7 +162,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         TextView tvCompetition, tvScore, tvHomeTeam, tvAwayTeam, tvTime, tvStatus;
         ImageView ivHomeTeam, ivAwayTeam, ivFavorite;
 
-        public MatchViewHolder(View itemView) {
+        public MatchViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCompetition = itemView.findViewById(R.id.tvCompetition);
             tvScore = itemView.findViewById(R.id.tvScore);

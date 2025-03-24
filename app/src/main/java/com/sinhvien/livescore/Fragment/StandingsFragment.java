@@ -159,9 +159,11 @@ public class StandingsFragment extends Fragment {
 
         // ✅ Lấy đúng key từ Firestore
         String teamName = (String) standingMap.get("teamName");
+        String teamShortName = (String) standingMap.get("teamShortName");
+        String teamTla = (String) standingMap.get("teamTla");
         String teamCrest = (String) standingMap.get("teamCrest");
 
-        Team team = new Team(teamName, teamCrest);
+        Team team = new Team(teamName, teamShortName, teamTla, teamCrest);
         return new Standing(position, team, playedGames, form, won, draw, lost, points, goalsFor, goalsAgainst, goalDifference);
     }
 

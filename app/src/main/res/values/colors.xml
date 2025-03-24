@@ -60,4 +60,26 @@
     <color name="text_color_regular">#000000</color>
 
     <color name="header_text">#000000</color>
+    <color name="new_primary">#1976D2</color>
+    <color name="new_primary_dark">#0D47A1</color>
+    <color name="new_accent">#FF4081</color>
+    <color name="new_accent_dark">#C2185B</color>
+    <color name="new_background">#F5F7FA</color>
+    <color name="input_background">#F9FAFC</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="card_stroke">#EEEEEE</color>
+
+    <!-- Add these new colors to colors.xml -->
+    <color name="modern_primary">#4361EE</color>
+    <color name="modern_primary_dark">#3A0CA3</color>
+    <color name="modern_secondary">#F72585</color>
+    <color name="modern_background">#F8F9FC</color>
+    <color name="modern_surface">#FFFFFF</color>
+    <color name="modern_text_primary">#2B2D42</color>
+    <color name="modern_text_secondary">#6C757D</color>
+    <color name="modern_accent">#4CC9F0</color>
+    <color name="modern_error">#E63946</color>
+    <color name="modern_card_stroke">#E9ECEF</color>
+    <color name="modern_divider">#DEE2E6</color>
+
 </resources>

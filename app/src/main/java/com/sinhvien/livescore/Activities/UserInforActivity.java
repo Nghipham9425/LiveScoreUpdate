@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,21 +31,24 @@ import com.sinhvien.livescore.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserInforActivity extends AppCompatActivity {
+
     private static final int PICK_IMAGE_REQUEST = 1;
 
-    // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    // UI components
-    private ImageView profileImageView;
+    private CircleImageView profileImageView;
     private TextView tvUsername;
-    private EditText etEmail, etCurrentPassword, etNewPassword;
-    private Button btnSave;
+    private TextInputEditText etEmail, etCurrentPassword, etNewPassword;
+    private MaterialButton btnSave;
+    private ImageView btnBack;
 
     private Uri imageUri;
     private ProgressDialog progressDialog;
@@ -54,92 +58,142 @@ public class UserInforActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_infor);
 
-        // Initialize Firebase
+        // Khởi tạo Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Initialize UI components
+        // Khởi tạo view
         profileImageView = findViewById(R.id.profileImageView);
         tvUsername = findViewById(R.id.tvUsername);
         etEmail = findViewById(R.id.etEmail);
         etCurrentPassword = findViewById(R.id.etCurrentPassword);
         etNewPassword = findViewById(R.id.etNewPassword);
         btnSave = findViewById(R.id.btnSave);
+        btnBack = findViewById(R.id.btnBack);
 
-        // Load user data
-        loadUserProfile();
-
-        // Set click listeners
-        profileImageView.setOnClickListener(v -> openFileChooser());
-
+        // Set listeners
+        btnBack.setOnClickListener(v -> finish());
         btnSave.setOnClickListener(v -> saveChanges());
+        findViewById(R.id.fabChangePhoto).setOnClickListener(v -> openFileChooser());
 
-        // Set up back button
-        ImageView btnBack = findViewById(R.id.btnBack);
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> finish());
-        }
+        // Tải dữ liệu người dùng
+        loadUserData();
     }
 
-    private void loadUserProfile() {
+    private void loadUserData() {
         FirebaseUser user = mAuth.getCurrentUser();
+
         if (user != null) {
-            // Load email
+            // Tải email
             etEmail.setText(user.getEmail());
 
-            // Set default username
+            // Đặt tên người dùng mặc định
             String defaultUsername = user.getDisplayName() != null ?
                     user.getDisplayName() : "User" + user.getUid().substring(0, 5);
             tvUsername.setText(defaultUsername);
 
-            // Check if the Users collection exists and create user document if needed
+            // Kiểm tra bộ sưu tập Users và tạo tài liệu người dùng nếu cần
             DocumentReference userRef = db.collection("Users").document(user.getUid());
             userRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        // Document exists, load data
+                        // Tài liệu tồn tại, tải dữ liệu
                         String username = document.getString("username");
                         if (username != null && !username.isEmpty()) {
                             tvUsername.setText(username);
                         }
 
-                        // Try to load avatar from Base64
-                        String avatarBase64 = document.getString("avatarBase64");
-                        if (avatarBase64 != null && !avatarBase64.isEmpty()) {
+                        // Thử tải ảnh chất lượng cao trước
+                        String avatarHighQuality = document.getString("avatarHighQuality");
+                        if (avatarHighQuality != null && !avatarHighQuality.isEmpty()) {
                             try {
-                                // Remove the prefix if present
-                                String base64Data = avatarBase64;
-                                if (avatarBase64.contains(",")) {
-                                    base64Data = avatarBase64.split(",")[1];
-                                }
+                                byte[] decodedString = Base64.decode(avatarHighQuality, Base64.DEFAULT);
 
-                                byte[] decodedString = Base64.decode(base64Data, Base64.DEFAULT);
-                                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                                profileImageView.setImageBitmap(decodedBitmap);
+                                // Sử dụng Glide để tải ảnh từ mảng byte
+                                Glide.with(this)
+                                        .load(decodedString)
+                                        .placeholder(R.drawable.default_profile)
+                                        .error(R.drawable.default_profile)
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Bật cache
+                                        .dontAnimate() // Tránh animation làm giảm chất lượng
+                                        .into(profileImageView);
                             } catch (Exception e) {
-                                // If there's an error, use default image
-                                profileImageView.setImageResource(R.drawable.default_profile);
+                                // Thử các định dạng khác nếu không đọc được
+                                loadWebPAvatar(document);
                             }
+                        } else {
+                            // Thử các định dạng khác
+                            loadWebPAvatar(document);
                         }
                     } else {
-                        // Document doesn't exist, create it
+                        // Tài liệu không tồn tại, tạo nó
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("username", defaultUsername);
                         userData.put("email", user.getEmail());
 
                         userRef.set(userData)
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(UserInforActivity.this, "Hồ sơ người dùng đã được tạo", Toast.LENGTH_SHORT).show();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(UserInforActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                });
+                                .addOnSuccessListener(aVoid -> Toast.makeText(UserInforActivity.this, "Hồ sơ người dùng đã được tạo", Toast.LENGTH_SHORT).show())
+                                .addOnFailureListener(e -> Toast.makeText(UserInforActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 } else {
                     Toast.makeText(UserInforActivity.this, "Lỗi kết nối đến cơ sở dữ liệu: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    private void loadWebPAvatar(DocumentSnapshot document) {
+        // Thử tải ảnh WebP tối ưu
+        String avatarWebP = document.getString("avatarWebP");
+        if (avatarWebP != null && !avatarWebP.isEmpty()) {
+            try {
+                byte[] decodedString = Base64.decode(avatarWebP, Base64.DEFAULT);
+
+                // Sử dụng Glide để tải ảnh từ mảng byte
+                Glide.with(this)
+                        .load(decodedString)
+                        .placeholder(R.drawable.default_profile)
+                        .error(R.drawable.default_profile)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(profileImageView);
+            } catch (Exception e) {
+                // Nếu có lỗi, kiểm tra định dạng legacy
+                loadLegacyAvatar(document);
+            }
+        } else {
+            // Nếu không có định dạng WebP, thử định dạng legacy
+            loadLegacyAvatar(document);
+        }
+    }
+
+    private void loadLegacyAvatar(DocumentSnapshot document) {
+        // Thử tải ảnh từ Base64 (định dạng cũ)
+        String avatarBase64 = document.getString("avatarBase64");
+        if (avatarBase64 != null && !avatarBase64.isEmpty()) {
+            try {
+                // Loại bỏ tiền tố nếu có
+                String base64Data = avatarBase64;
+                if (avatarBase64.contains(",")) {
+                    base64Data = avatarBase64.split(",")[1];
+                }
+
+                byte[] decodedString = Base64.decode(base64Data, Base64.DEFAULT);
+
+                // Sử dụng Glide để cải thiện hiệu suất và chất lượng
+                Glide.with(this)
+                        .load(decodedString)
+                        .placeholder(R.drawable.default_profile)
+                        .error(R.drawable.default_profile)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(profileImageView);
+            } catch (Exception e) {
+                // Nếu có lỗi, sử dụng hình ảnh mặc định
+                profileImageView.setImageResource(R.drawable.default_profile);
+            }
+        } else {
+            // Không tìm thấy ảnh đại diện, sử dụng ảnh mặc định
+            profileImageView.setImageResource(R.drawable.default_profile);
         }
     }
 
@@ -154,47 +208,63 @@ public class UserInforActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
 
-            // Preview the selected image
+            // Hiển thị xem trước
             Glide.with(this).load(imageUri).into(profileImageView);
 
-            // Upload using Base64 approach
-            uploadImageAsBase64();
+            // Sử dụng phương thức mới với chất lượng cao hơn
+            uploadHighQualityImageToFirestore();
         }
     }
 
-    private void uploadImageAsBase64() {
+    private void uploadHighQualityImageToFirestore() {
         if (imageUri != null) {
-            // Show progress dialog
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Đang xử lý ảnh...");
             progressDialog.show();
 
             FirebaseUser user = mAuth.getCurrentUser();
             if (user != null) {
-                String uid = user.getUid();
-
                 try {
-                    // Convert image to bitmap with compression
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    // 1. Tải bitmap chất lượng cao với options
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                    Bitmap originalBitmap = BitmapFactory.decodeStream(imageStream, null, options);
+                    imageStream.close();
 
-                    // Resize bitmap to reduce storage size (max 200x200 pixels)
-                    bitmap = getResizedBitmap(bitmap, 200);
+                    // 2. Tập trung vào khuôn mặt nếu có thể (ảnh đại diện)
+                    // Crop thành hình vuông từ trung tâm
+                    Bitmap squareBitmap = cropToSquare(originalBitmap);
 
-                    // Convert bitmap to Base64 string
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-                    byte[] imageData = baos.toByteArray();
-                    String base64Image = "data:image/jpeg;base64," + Base64.encodeToString(imageData, Base64.DEFAULT);
+                    // 3. Resize với độ phân giải cao hơn (600px cho avatar)
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(squareBitmap, 600, 600, true);
 
-                    // Create or update user document with the Base64 image
-                    DocumentReference userRef = db.collection("Users").document(uid);
+                    // 4. Sử dụng PNG cho chất lượng tốt nhất nếu kích thước đủ nhỏ
+                    ByteArrayOutputStream baosPNG = new ByteArrayOutputStream();
+                    resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, baosPNG);
 
+                    // Kiểm tra kích thước, nếu quá lớn thì dùng WebP chất lượng cao
+                    byte[] imageData = baosPNG.toByteArray();
+                    if (imageData.length > 500000) { // 500KB
+                        // Sử dụng WebP chất lượng cao hơn (90%)
+                        ByteArrayOutputStream baosWebP = new ByteArrayOutputStream();
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                            resizedBitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, baosWebP);
+                        } else {
+                            resizedBitmap.compress(Bitmap.CompressFormat.WEBP, 90, baosWebP);
+                        }
+                        imageData = baosWebP.toByteArray();
+                    }
+
+                    String base64Image = Base64.encodeToString(imageData, Base64.NO_WRAP);
+
+                    // Lưu vào Firestore với định dạng tối ưu hơn
+                    DocumentReference userRef = db.collection("Users").document(user.getUid());
                     Map<String, Object> updateData = new HashMap<>();
-                    updateData.put("avatarBase64", base64Image);
+                    updateData.put("avatarHighQuality", base64Image);
 
                     userRef.set(updateData, SetOptions.merge())
                             .addOnSuccessListener(aVoid -> {
@@ -202,7 +272,7 @@ public class UserInforActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                 }
                                 Toast.makeText(UserInforActivity.this,
-                                        "Ảnh đại diện đã được cập nhật", Toast.LENGTH_SHORT).show();
+                                        "Ảnh đại diện đã được cập nhật với chất lượng cao", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
                                 if (progressDialog.isShowing()) {
@@ -211,7 +281,6 @@ public class UserInforActivity extends AppCompatActivity {
                                 Toast.makeText(UserInforActivity.this,
                                         "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
-
                 } catch (IOException e) {
                     if (progressDialog.isShowing()) {
                         progressDialog.dismiss();
@@ -222,7 +291,19 @@ public class UserInforActivity extends AppCompatActivity {
         }
     }
 
-    // Helper method to resize bitmap
+    // Phương thức cắt ảnh thành hình vuông từ trung tâm
+    private Bitmap cropToSquare(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int size = Math.min(width, height);
+
+        int x = (width - size) / 2;
+        int y = (height - size) / 2;
+
+        return Bitmap.createBitmap(bitmap, x, y, size, size);
+    }
+
+    // Phương thức thay đổi kích thước bitmap
     private Bitmap getResizedBitmap(Bitmap bitmap, int maxSize) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
@@ -245,18 +326,18 @@ public class UserInforActivity extends AppCompatActivity {
         String newPassword = etNewPassword.getText().toString().trim();
 
         if (user != null) {
-            // Check if user wants to change password
+            // Kiểm tra nếu người dùng muốn thay đổi mật khẩu
             if (!currentPassword.isEmpty() && !newPassword.isEmpty()) {
                 progressDialog = new ProgressDialog(this);
                 progressDialog.setMessage("Đang cập nhật mật khẩu...");
                 progressDialog.show();
 
-                // Properly reauthenticate before password change
+                // Xác thực lại trước khi thay đổi mật khẩu
                 AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
 
                 user.reauthenticate(credential)
                         .addOnSuccessListener(aVoid -> {
-                            // Reauthentication successful, now update password
+                            // Xác thực thành công, cập nhật mật khẩu
                             user.updatePassword(newPassword)
                                     .addOnCompleteListener(task -> {
                                         if (progressDialog.isShowing()) {
@@ -282,7 +363,7 @@ public class UserInforActivity extends AppCompatActivity {
             } else if (currentPassword.isEmpty() && !newPassword.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập mật khẩu hiện tại", Toast.LENGTH_SHORT).show();
             } else {
-                // No password change requested
+                // Không có yêu cầu thay đổi mật khẩu
                 Toast.makeText(this, "Không có thay đổi nào được thực hiện", Toast.LENGTH_SHORT).show();
             }
         }

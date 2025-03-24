@@ -23,25 +23,21 @@ public class FirebaseHelper {
         db.setFirestoreSettings(settings);
     }
 
-    /**
-     * 🔥 Save or update match if there are changes
-     */
     public void saveOrUpdateMatch(Match match) {
         db.collection(MATCHES_COLLECTION).document(match.getMatchId())
-                .get(Source.CACHE) // 🔥 Try to read from cache first
+                .get(Source.CACHE)
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Match existingMatch = documentSnapshot.toObject(Match.class);
                         if (existingMatch != null && !isMatchChanged(existingMatch, match)) {
                             Log.d("Firestore", "No changes detected, skipping update for match: " + match.getMatchId());
-                            return; // ⏩ Skip if no changes
+                            return;
                         }
                     }
-                    updateMatchInFirestore(match); // 🔥 Only write if there are changes
+                    updateMatchInFirestore(match);
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Error checking match", e);
-                    // If cache check fails, update anyway
                     updateMatchInFirestore(match);
                 });
     }
@@ -53,14 +49,15 @@ public class FirebaseHelper {
                 .addOnFailureListener(e -> Log.e("Firestore", "Error saving match", e));
     }
 
-    /**
-     * 🔍 Check if match has changed
-     */
     private boolean isMatchChanged(Match oldMatch, Match newMatch) {
         return !Objects.equals(oldMatch.getScore(), newMatch.getScore()) ||
                 !Objects.equals(oldMatch.getStatus(), newMatch.getStatus()) ||
                 !Objects.equals(oldMatch.getHomeTeam().getCrest(), newMatch.getHomeTeam().getCrest()) ||
-                !Objects.equals(oldMatch.getAwayTeam().getCrest(), newMatch.getAwayTeam().getCrest());
+                !Objects.equals(oldMatch.getAwayTeam().getCrest(), newMatch.getAwayTeam().getCrest()) ||
+                !Objects.equals(oldMatch.getHomeTeam().getShortName(), newMatch.getHomeTeam().getShortName()) ||
+                !Objects.equals(oldMatch.getAwayTeam().getShortName(), newMatch.getAwayTeam().getShortName()) ||
+                !Objects.equals(oldMatch.getHomeTeam().getTla(), newMatch.getHomeTeam().getTla()) ||
+                !Objects.equals(oldMatch.getAwayTeam().getTla(), newMatch.getAwayTeam().getTla());
     }
 
     /**
