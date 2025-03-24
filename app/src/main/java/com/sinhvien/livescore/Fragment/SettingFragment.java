@@ -1,15 +1,21 @@
 package com.sinhvien.livescore.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -17,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.sinhvien.livescore.Activities.LoginActivity;
-import com.sinhvien.livescore.Activities.UserInfoActivity;
+import com.sinhvien.livescore.Activities.UserInforActivity;
 import com.sinhvien.livescore.R;
 import com.sinhvien.livescore.Activities.RegisterActivity;
 
@@ -26,6 +32,12 @@ public class SettingFragment extends Fragment {
     private TextView txtHello;
     private Button btnLogin, btnJoinNow, btnLogout, btnNotifications;
     private MaterialButton btnUserInfo;
+
+    // Dark mode components
+    private LinearLayout darkModeToggle;
+    private SwitchCompat switchDarkMode;
+    private ImageView imgThemeIcon;
+    private SharedPreferences sharedPrefs;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +56,32 @@ public class SettingFragment extends Fragment {
         btnNotifications = view.findViewById(R.id.btnNotifications);
         btnUserInfo = view.findViewById(R.id.btnUserInfo);
 
+        // Initialize dark mode components
+        darkModeToggle = view.findViewById(R.id.darkModeToggle);
+        switchDarkMode = view.findViewById(R.id.switchDarkMode);
+        imgThemeIcon = view.findViewById(R.id.imgThemeIcon);
+
+        // Initialize shared preferences
+        sharedPrefs = requireActivity().getSharedPreferences("app_settings", Context.MODE_PRIVATE);
+        boolean isDarkMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+
+        // Set initial state for dark mode
+        switchDarkMode.setChecked(isDarkMode);
+        updateThemeIcon(isDarkMode);
+
+        // Set listeners for dark mode toggle
+        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (buttonView.isPressed()) {
+                setDarkMode(isChecked);
+            }
+        });
+
+        darkModeToggle.setOnClickListener(v -> {
+            boolean newState = !switchDarkMode.isChecked();
+            switchDarkMode.setChecked(newState);
+            setDarkMode(newState);
+        });
+
         updateUI();
 
         btnLogin.setOnClickListener(v -> startActivity(new Intent(getActivity(), LoginActivity.class)));
@@ -55,9 +93,28 @@ public class SettingFragment extends Fragment {
         });
 
         btnUserInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+            Intent intent = new Intent(getActivity(), UserInforActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void setDarkMode(boolean isDarkMode) {
+        // Save preference
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean("dark_mode", isDarkMode);
+        editor.apply();
+
+        // Update theme icon
+        updateThemeIcon(isDarkMode);
+
+        // Apply theme
+        AppCompatDelegate.setDefaultNightMode(
+                isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+        );
+    }
+
+    private void updateThemeIcon(boolean isDarkMode) {
+        imgThemeIcon.setImageResource(isDarkMode ? R.drawable.dark_ic : R.drawable.light_ic);
     }
 
     private void updateUI() {

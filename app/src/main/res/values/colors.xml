@@ -4,7 +4,6 @@
     <color name="red">#FF0000</color>
     <color name="blue">#0000FF</color>
     <color name="black">#000000</color>
-    <color name="text_primary_dark">#000000</color>
     <color name="status_live">#FF4444</color>
     <color name="status_finished">#888888</color>
     <color name="status_upcoming">#448AFF</color>
@@ -18,29 +17,47 @@
     <color name="secondary">#FF4081</color>
 
     <!-- Màu giao diện -->
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
 
     <!-- Màu nền sáng & tối -->
     <color name="background_light">#F8F9FA</color>
     <color name="background_dark">#121212</color>
     <color name="surface_light">#F5F5F5</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="card_background_light">#FFFFFF</color>
+    <color name="card_background_dark">#2D2D2D</color>
 
     <!-- Màu văn bản -->
     <color name="text_primary">#212529</color>
     <color name="text_secondary">#495057</color>
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B0B0B0</color>
     <color name="primary_dark">#00796B</color>
 
-    <!-- Màu bảng xếp hạng -->
-    <color name="header_background">#263238</color>
-    <color name="header_text">#FFFFFF</color>
+    <!-- Màu chủ đạo cho dark mode -->
+    <color name="primary_dark_mode">#3F51B5</color>
+    <color name="primary_dark_dark_mode">#303F9F</color>
+    <color name="accent_dark_mode">#FF4081</color>
+    <color name="primary_variant_dark_mode">#0D47A1</color>
+    <color name="secondary_dark_mode">#FF80AB</color>
+    <!-- Add these missing colors to your colors.xml file -->
+    <color name="status_selected">#3D5AFE</color>
+    <color name="status_pressed">#303F9F</color>
+    <!-- Colors for Material Components theme -->
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_primary_dark">#FFFFFF</color>
+    <color name="on_background_light">#212529</color>
+    <color name="on_background_dark">#FFFFFF</color>
+    <color name="on_surface_light">#212529</color>
+    <color name="on_surface_dark">#FFFFFF</color>
+    <!-- Add this to your colors.xml -->
+    <color name="header_background_dark">#1A1A1A</color>
+    <!-- Rest of your color definitions -->
+    <!-- Add to your colors.xml file -->
+    <color name="header_background">#E0E0E0</color>
+    <color name="text_color_regular">#000000</color>
 
-    <!-- Màu cho vị trí xếp hạng -->
-    <color name="champions_league">#1E88E5</color>
-    <color name="europa_league">#FFA000</color>
-    <color name="relegation">#D32F2F</color>
-    <color name="status_selected">#FF5722</color> <!-- Màu khi chọn -->
-    <color name="status_pressed">#FFC107</color>  <!-- Màu khi nhấn -->
-
+    <color name="header_text">#000000</color>
 </resources>

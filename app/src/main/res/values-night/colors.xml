@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Override specific colors for dark mode -->
+    <color name="background_light">@color/background_dark</color>
+    <color name="surface_light">@color/surface_dark</color>
+    <color name="card_background_light">@color/card_background_dark</color>
+    <color name="text_primary">@color/text_primary_dark</color>
+    <color name="text_secondary">@color/text_secondary_dark</color>
+    <color name="primary">@color/primary_dark_mode</color>
+    <color name="primary_variant">@color/primary_variant_dark_mode</color>
+    <color name="secondary">@color/secondary_dark_mode</color>
+    <!-- Add to your values/colors.xml file -->
+    <color name="header_background">#303030</color>
+
+    <color name="primary_variant_dark_mode">#0D47A1</color>
+    <color name="secondary_dark_mode">#FF80AB</color>
+    <!-- Add to your values-night/colors.xml file -->
+    <color name="header_text">#FFFFFF</color>
+    <color name="text_color_regular">#FFFFFF</color>
+
+</resources>

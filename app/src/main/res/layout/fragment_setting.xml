@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"> <!-- Sử dụng màu nền cố định ở đây -->
+    android:background="?android:attr/colorBackground"> <!-- Changed to use theme attribute instead of fixed color -->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="LiveScore"
-                android:textColor="@color/primary"
+                android:textColor="@color/text_primary"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hello, User!"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="24dp"
@@ -74,7 +74,7 @@
                     android:textColor="@android:color/white"
                     android:backgroundTint="@color/primary" />
             </LinearLayout>
-            <!-- Add after the Login & Join Now Buttons section and before Notifications Button -->
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUserInfo"
                 android:layout_width="match_parent"
@@ -84,11 +84,9 @@
                 android:textSize="16sp"
                 app:cornerRadius="8dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/colorOnPrimary"
                 android:backgroundTint="@color/primary" />
 
-            <!-- Notifications Button follows after -->
-            <!-- Notifications Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNotifications"
                 android:layout_width="match_parent"
@@ -98,42 +96,45 @@
                 android:textSize="16sp"
                 app:cornerRadius="8dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:backgroundTint="@color/primary" />
 
-            <!-- Dark Mode Button with Icon -->
+            <!-- Dark Mode Toggle (updated) -->
             <LinearLayout
+                android:id="@+id/darkModeToggle"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:orientation="horizontal"
                 android:layout_marginBottom="24dp"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:textColor="@android:color/white"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Dark Mode"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/colorOnBackground"
                     android:textSize="16sp" />
 
-                <FrameLayout
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:clickable="true"
-                    android:focusable="true">
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchDarkMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"/>
 
-                    <ImageView
-                        android:id="@+id/imgThemeIcon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="Theme Icon"
-                        android:src="@drawable/light_ic" />
-                </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgThemeIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Theme Icon"
+                    android:src="@drawable/light_ic" />
             </LinearLayout>
+
             <!-- Social Media Icons -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,6 +142,7 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginBottom="24dp">
+                android:textColor="@color/text_primary"
 
                 <!-- Instagram Icon -->
                 <ImageView

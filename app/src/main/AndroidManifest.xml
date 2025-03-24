@@ -16,16 +16,19 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.UserInfoActivity"
-            android:exported="false" />
-        <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".Activities.RegisterActivity" />
+            android:name=".Activities.UserInforActivity"
+            android:exported="false"
+            android:configChanges="uiMode" />
         <activity
-            android:name=".Activities.UserInfoActivity"
-            android:exported="false" />
+            android:name=".Activities.LoginActivity"
+            android:configChanges="uiMode" />
+        <activity
+            android:name=".Activities.RegisterActivity"
+            android:configChanges="uiMode" />
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
