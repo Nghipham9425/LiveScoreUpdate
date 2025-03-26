@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Override specific colors for dark mode -->
-    <color name="background_light">@color/background_dark</color>
-    <color name="surface_light">@color/surface_dark</color>
-    <color name="card_background_light">@color/card_background_dark</color>
-    <color name="text_primary">@color/text_primary_dark</color>
-    <color name="text_secondary">@color/text_secondary_dark</color>
-    <color name="primary">@color/primary_dark_mode</color>
-    <color name="primary_variant">@color/primary_variant_dark_mode</color>
-    <color name="secondary">@color/secondary_dark_mode</color>
-    <!-- Add to your values/colors.xml file -->
-    <color name="header_background">#303030</color>
-
-    <color name="primary_variant_dark_mode">#0D47A1</color>
-    <color name="secondary_dark_mode">#FF80AB</color>
-    <!-- Add to your values-night/colors.xml file -->
+    <!-- Dark theme colors -->
+    <color name="home_background">@color/background_dark</color>
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary_dark">#B3FFFFFF</color>
+    <color name="card_background">@color/card_background_dark</color>
     <color name="header_text">#FFFFFF</color>
-    <color name="text_color_regular">#FFFFFF</color>
+    <color name="header_background">@color/header_background_dark</color>
 
+    <color name="search_text_color">#000000</color>
+    <color name="search_hint_color">#757575</color>
+    <color name="search_background_color">#FFFFFF</color>
 </resources>

@@ -3,7 +3,6 @@ package com.sinhvien.livescore.Network;
 import com.sinhvien.livescore.Models.Competition;
 import com.sinhvien.livescore.Models.MatchResponse;
 import com.sinhvien.livescore.Models.StandingsResponse;
-import com.sinhvien.livescore.Models.TeamResponse;
 
 import java.util.List;
 import retrofit2.Call;
@@ -24,8 +23,8 @@ public interface FootballApiService {
             @Query("dateTo") String dateTo // Ngày kết thúc
     );
 
-    @GET("teams/{teamId}")
-    Call<TeamResponse> getTeamInfo(@Path("teamId") int teamId);
+
+
 
     @GET("competitions/{competitionId}/standings")
     Call<StandingsResponse> getStandings(

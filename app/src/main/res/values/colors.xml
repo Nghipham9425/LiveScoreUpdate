@@ -15,6 +15,7 @@
     <color name="primary">#3D5AFE</color>
     <color name="primary_variant">#0039CB</color>
     <color name="secondary">#FF4081</color>
+    <color name="primary_dark">#00796B</color>
 
     <!-- Màu giao diện -->
     <color name="colorPrimary">#3F51B5</color>
@@ -28,13 +29,13 @@
     <color name="surface_dark">#1E1E1E</color>
     <color name="card_background_light">#FFFFFF</color>
     <color name="card_background_dark">#2D2D2D</color>
+    <color name="card_background">@color/white</color>
 
     <!-- Màu văn bản -->
     <color name="text_primary">#212529</color>
     <color name="text_secondary">#495057</color>
     <color name="text_primary_dark">#FFFFFF</color>
     <color name="text_secondary_dark">#B0B0B0</color>
-    <color name="primary_dark">#00796B</color>
 
     <!-- Màu chủ đạo cho dark mode -->
     <color name="primary_dark_mode">#3F51B5</color>
@@ -42,9 +43,10 @@
     <color name="accent_dark_mode">#FF4081</color>
     <color name="primary_variant_dark_mode">#0D47A1</color>
     <color name="secondary_dark_mode">#FF80AB</color>
-    <!-- Add these missing colors to your colors.xml file -->
+
     <color name="status_selected">#3D5AFE</color>
     <color name="status_pressed">#303F9F</color>
+
     <!-- Colors for Material Components theme -->
     <color name="on_primary">#FFFFFF</color>
     <color name="on_primary_dark">#FFFFFF</color>
@@ -52,14 +54,12 @@
     <color name="on_background_dark">#FFFFFF</color>
     <color name="on_surface_light">#212529</color>
     <color name="on_surface_dark">#FFFFFF</color>
-    <!-- Add this to your colors.xml -->
+
     <color name="header_background_dark">#1A1A1A</color>
-    <!-- Rest of your color definitions -->
-    <!-- Add to your colors.xml file -->
     <color name="header_background">#E0E0E0</color>
     <color name="text_color_regular">#000000</color>
-
     <color name="header_text">#000000</color>
+
     <color name="new_primary">#1976D2</color>
     <color name="new_primary_dark">#0D47A1</color>
     <color name="new_accent">#FF4081</color>
@@ -69,7 +69,7 @@
     <color name="divider">#E0E0E0</color>
     <color name="card_stroke">#EEEEEE</color>
 
-    <!-- Add these new colors to colors.xml -->
+    <!-- Modern colors -->
     <color name="modern_primary">#4361EE</color>
     <color name="modern_primary_dark">#3A0CA3</color>
     <color name="modern_secondary">#F72585</color>
@@ -82,4 +82,8 @@
     <color name="modern_card_stroke">#E9ECEF</color>
     <color name="modern_divider">#DEE2E6</color>
 
+    <color name="home_background">@color/white</color>
+    <color name="search_text_color">#000000</color>
+    <color name="search_hint_color">#757575</color>
+    <color name="search_background_color">#FFFFFF</color>
 </resources>

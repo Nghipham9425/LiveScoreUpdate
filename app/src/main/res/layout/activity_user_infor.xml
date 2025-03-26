@@ -1,4 +1,3 @@
-<!-- Updated activity_user_infor.xml layout -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,7 +20,7 @@
                 android:layout_height="150dp"
                 android:background="@drawable/profile_header_gradient">
 
-                <!-- Back button - adding this to fix the error -->
+                <!-- Back button -->
                 <ImageView
                     android:id="@+id/btnBack"
                     android:layout_width="48dp"
@@ -43,7 +42,6 @@
                     android:textStyle="bold" />
             </FrameLayout>
 
-            <!-- Rest of your layout remains the same -->
             <!-- Profile Content Container -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -51,7 +49,8 @@
                 android:layout_marginTop="-64dp"
                 android:layout_marginHorizontal="16dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -70,7 +69,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/default_profile"
-                            app:civ_border_color="@color/white"
+                            app:civ_border_color="?attr/colorPrimary"
                             app:civ_border_width="3dp" />
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -94,7 +93,7 @@
                         android:layout_marginBottom="24dp"
                         android:gravity="center"
                         android:text="Username"
-                        android:textColor="@color/text_primary"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -105,7 +104,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         app:startIconDrawable="@drawable/ic_email"
-                        app:boxBackgroundColor="@color/input_background">
+                        app:startIconTint="?attr/colorPrimary"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
+                        app:hintTextColor="?attr/colorPrimary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etEmail"
@@ -113,6 +115,7 @@
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:hint="Email"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:inputType="textEmailAddress" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,13 +127,17 @@
                         android:layout_marginBottom="16dp"
                         app:endIconMode="password_toggle"
                         app:startIconDrawable="@drawable/ic_lock"
-                        app:boxBackgroundColor="@color/input_background">
+                        app:startIconTint="?attr/colorPrimary"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
+                        app:hintTextColor="?attr/colorPrimary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCurrentPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Mật khẩu hiện tại"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,13 +149,17 @@
                         android:layout_marginBottom="24dp"
                         app:endIconMode="password_toggle"
                         app:startIconDrawable="@drawable/ic_lock"
-                        app:boxBackgroundColor="@color/input_background">
+                        app:startIconTint="?attr/colorPrimary"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
+                        app:hintTextColor="?attr/colorPrimary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etNewPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Mật khẩu mới"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 

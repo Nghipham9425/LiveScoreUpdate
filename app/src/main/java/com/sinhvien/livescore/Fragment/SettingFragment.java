@@ -63,9 +63,12 @@ public class SettingFragment extends Fragment {
 
         // Initialize shared preferences
         sharedPrefs = requireActivity().getSharedPreferences("app_settings", Context.MODE_PRIVATE);
-        boolean isDarkMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
 
-        // Set initial state for dark mode
+        // Read saved dark mode preference first, then check current mode as fallback
+        boolean isDarkMode = sharedPrefs.getBoolean("dark_mode",
+                AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
+
+        // Set initial state for dark mode switch
         switchDarkMode.setChecked(isDarkMode);
         updateThemeIcon(isDarkMode);
 
@@ -98,6 +101,18 @@ public class SettingFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Update UI when returning to the fragment
+        updateUI();
+
+        // Ensure the switch is in sync with the current theme
+        boolean isDarkMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        switchDarkMode.setChecked(isDarkMode);
+        updateThemeIcon(isDarkMode);
+    }
+
     private void setDarkMode(boolean isDarkMode) {
         // Save preference
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -111,6 +126,9 @@ public class SettingFragment extends Fragment {
         AppCompatDelegate.setDefaultNightMode(
                 isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );
+
+        // Recreate the activity to apply the theme change immediately
+        requireActivity().recreate();
     }
 
     private void updateThemeIcon(boolean isDarkMode) {
@@ -128,18 +146,18 @@ public class SettingFragment extends Fragment {
                         if (documentSnapshot.exists()) {
                             String username = documentSnapshot.getString("username");
                             if (username != null && !username.isEmpty()) {
-                                txtHello.setText("Chào bạn, " + username);
+                                txtHello.setText("Hello, " + username);
                             } else {
-                                txtHello.setText("Chào bạn, User");
+                                txtHello.setText("Hello, User");
                             }
                         } else {
                             // If no username in Firestore
-                            txtHello.setText("Chào bạn, User");
+                            txtHello.setText("Hello, User");
                         }
                     })
                     .addOnFailureListener(e -> {
                         // If error while fetching username
-                        txtHello.setText("Chào bạn, User");
+                        txtHello.setText("Hello, User");
                     });
 
             txtHello.setVisibility(View.VISIBLE);

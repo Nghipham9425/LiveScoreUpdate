@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.constraintlayout.v221)
     implementation (libs.cardview)
     implementation ("de.hdodenhof:circleimageview:3.1.0")
-
+    implementation ("com.google.code.gson:gson:2.8.9")
     implementation ("androidx.core:core-splashscreen:1.0.1")
     // Networking
     implementation(libs.volley)

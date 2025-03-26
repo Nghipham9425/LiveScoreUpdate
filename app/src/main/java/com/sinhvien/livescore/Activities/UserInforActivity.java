@@ -272,7 +272,7 @@ public class UserInforActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                 }
                                 Toast.makeText(UserInforActivity.this,
-                                        "Ảnh đại diện đã được cập nhật với chất lượng cao", Toast.LENGTH_SHORT).show();
+                                        "Ảnh đại diện đã được cập nhật", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
                                 if (progressDialog.isShowing()) {

@@ -5,24 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/home_background"
     tools:context=".Fragments.StandingsFragment">
+
+    <!-- Title for Standings -->
+    <TextView
+        android:id="@+id/tvStandingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Bảng xếp hạng"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <!-- Chọn giải đấu -->
     <Spinner
         android:id="@+id/leagueSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/spinner_background"
-        android:padding="12dp" />
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#D8C3A5"
+        android:minHeight="48dp"
+        android:padding="8dp" />
 
-    <!-- Tiêu đề của các cột -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:background="@color/header_background">
+        android:background="@color/status_upcoming"
+    >
 
         <!-- Vị trí -->
         <TextView
@@ -32,7 +46,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/header_text" />
+            android:textColor="?android:attr/textColorPrimary" />
 
         <!-- Logo -->
         <View
@@ -48,7 +62,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:paddingStart="8dp"
-            android:textColor="@color/header_text" />
+            android:textColor="?android:attr/textColorPrimary" />
 
         <!-- Thắng -->
         <TextView
@@ -58,7 +72,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/header_text" />
+            android:textColor="?android:attr/textColorPrimary" />
 
         <!-- Hòa -->
         <TextView
@@ -68,7 +82,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/header_text" />
+            android:textColor="?android:attr/textColorPrimary" />
 
         <!-- Thua -->
         <TextView
@@ -78,7 +92,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/header_text" />
+            android:textColor="?android:attr/textColorPrimary" />
 
         <!-- Điểm -->
         <TextView
@@ -88,19 +102,23 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/header_text" />
+            android:textColor="?android:attr/textColorPrimary" />
     </LinearLayout>
 
     <!-- Danh sách bảng xếp hạng -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/home_background">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewStandings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            android:background="@color/home_background"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_standing" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

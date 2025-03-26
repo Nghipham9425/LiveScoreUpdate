@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/home_background"
     tools:context=".Fragment.FavoriteFragment"
-    android:padding="16dp">
+    android:fitsSystemWindows="false">
 
-    <!-- Header -->
+    <!-- Keep padding in the elements instead of the parent -->
     <TextView
         android:id="@+id/tvFavoriteHeader"
         android:layout_width="wrap_content"
@@ -19,23 +19,25 @@
         android:textStyle="bold"
         android:textColor="@color/primary"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- RecyclerView hiển thị danh sách trận đấu yêu thích -->
+    <!-- RecyclerView with clipToPadding=false -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFavorites"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvFavoriteHeader"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@id/tvFavoriteHeader" />
 
-    <!-- TextView hiển thị khi không có trận đấu yêu thích -->
+    <!-- Keep the no favorites text -->
     <TextView
         android:id="@+id/tvNoFavorites"
         android:layout_width="wrap_content"

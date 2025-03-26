@@ -6,6 +6,8 @@ public class MatchResponse {
     public List<MatchItem> matches;
 
     public static class MatchItem {
+
+        public String id;
         public Team homeTeam;
         public Team awayTeam;
         public Score score;

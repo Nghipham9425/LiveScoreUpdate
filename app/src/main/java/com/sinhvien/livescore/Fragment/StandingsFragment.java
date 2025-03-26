@@ -157,7 +157,6 @@ public class StandingsFragment extends Fragment {
         int goalDifference = ((Long) standingMap.get("goalDifference")).intValue();
         String form = (String) standingMap.get("form");
 
-        // ✅ Lấy đúng key từ Firestore
         String teamName = (String) standingMap.get("teamName");
         String teamShortName = (String) standingMap.get("teamShortName");
         String teamTla = (String) standingMap.get("teamTla");
