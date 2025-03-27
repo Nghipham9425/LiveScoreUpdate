@@ -51,6 +51,11 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation ("com.google.code.gson:gson:2.8.9")
     implementation ("androidx.core:core-splashscreen:1.0.1")
+
+    implementation ("androidx.work:work-runtime:2.8.1")
+    implementation ("com.google.guava:guava:31.1-android")
+
+
     // Networking
     implementation(libs.volley)
     implementation(libs.retrofit)

@@ -1,6 +1,8 @@
 package com.sinhvien.livescore.Activities;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.Manifest; // Fix: Correct import for Android permissions
 import com.sinhvien.livescore.Models.Match;
 import com.sinhvien.livescore.Models.Standing;
 import com.sinhvien.livescore.FireBase.FirebaseHelper;
@@ -56,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
             fetchAllStandings();
             fetchAllMatches();
         });
+        // Trong phương thức onCreate của MainActivity.java
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+            }
+        }
     }
 
     private void applyTheme() {

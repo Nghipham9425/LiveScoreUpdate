@@ -55,7 +55,6 @@
                 android:background="@color/primary"
                 android:text="Matchday"
                 android:textColor="#FFFFFF" />
-
         </LinearLayout>
 
         <!-- Spinner -->
@@ -67,6 +66,46 @@
             android:backgroundTint="#D8C3A5"
             android:minHeight="48dp"
             android:padding="8dp" />
+
+        <!-- Date Selector -->
+        <!-- Date Selector - Add this right after your spinnerLeague -->
+        <LinearLayout
+            android:id="@+id/dateSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnPrevDate"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="&lt;"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@color/bright_red"/>
+
+            <TextView
+                android:id="@+id/tvCurrentDate"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="#FDF0D5"
+                android:textColor="#003049"
+                android:text="All Matches"/>
+
+            <Button
+                android:id="@+id/btnNextDate"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text="&gt;"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@color/bright_red"/>
+        </LinearLayout>
     </LinearLayout>
 
     <!-- RecyclerView -->
@@ -83,4 +122,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerLayout"/>
+
+    <!-- Progress indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

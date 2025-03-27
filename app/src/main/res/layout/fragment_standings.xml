@@ -33,20 +33,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/modern_primary"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@color/status_upcoming"
-    >
+        android:padding="8dp">
 
         <!-- Vị trí -->
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text="#"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:text="#"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <!-- Logo -->
         <View
@@ -58,51 +57,51 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Đội"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:paddingStart="8dp"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:text="Đội"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <!-- Thắng -->
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text="T"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:text="T"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <!-- Hòa -->
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text="H"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:text="H"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <!-- Thua -->
         <TextView
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text="B"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:text="B"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <!-- Điểm -->
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="Đ"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:text="Đ"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- Danh sách bảng xếp hạng -->
@@ -110,15 +109,15 @@
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/home_background">
+        android:background="@color/light_cream">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewStandings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/home_background"
             android:clipToPadding="false"
             android:paddingBottom="8dp"
-            android:background="@color/home_background"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_standing" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

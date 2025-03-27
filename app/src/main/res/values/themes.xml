@@ -1,52 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- App Theme -->
-    <style name="Theme.YourAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+<resources>
+    <!-- Base application theme -->
+    <style name="Theme.LiveScore" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color -->
-        <item name="colorPrimary">@color/modern_primary</item>
-        <item name="colorPrimaryVariant">@color/modern_primary_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@android:color/white</item>
 
         <!-- Secondary brand color -->
-        <item name="colorSecondary">@color/modern_secondary</item>
-        <item name="colorSecondaryVariant">@color/modern_secondary</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary</item>
+        <item name="colorOnSecondary">@android:color/black</item>
 
+        <!-- Status bar and navigation colors -->
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
 
-        <item name="colorBackground">@color/white</item>
-
-        <!-- Status bar color -->
-        <item name="android:statusBarColor">@color/modern_primary_dark</item>
-
-        <!-- Background colors -->
-        <item name="android:colorBackground">@color/modern_background</item>
-        <item name="colorOnBackground">@color/modern_text_primary</item>
-        <item name="android:windowBackground">@color/modern_background</item>
-
-        <!-- Surface colors -->
-        <item name="colorSurface">@color/modern_surface</item>
-        <item name="colorOnSurface">@color/modern_text_primary</item>
-
-        <!-- Text colors -->
-        <item name="android:textColorPrimary">@color/modern_text_primary</item>
-        <item name="android:textColorSecondary">@color/modern_text_secondary</item>
-
-        <!-- Elevation for components -->
-        <item name="cardElevation">4dp</item>
-        <item name="cardStrokeColor">@color/card_stroke</item>
-        <item name="dividerColor">@color/divider</item>
-        <item name="headerBackground">@color/header_background</item>
-
-        <!-- 🔥 FIX: Loại bỏ Splash mặc định của Android 12+ -->
-        <item name="android:windowSplashScreenBackground" tools:targetApi="31">@android:color/white</item>
-        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@null</item>
-        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="31">@android:color/transparent</item>
-
-        <!-- Navigation bar styling for light mode -->
-        <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
-        <!-- Make nav bar flush with content -->
-        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="28">shortEdges</item>
-        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+        <!-- Other customizations -->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 </resources>

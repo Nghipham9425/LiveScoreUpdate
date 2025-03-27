@@ -1,14 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dark theme colors -->
-    <color name="home_background">@color/background_dark</color>
-    <color name="text_primary_dark">#FFFFFF</color>
-    <color name="text_secondary_dark">#B3FFFFFF</color>
-    <color name="card_background">@color/card_background_dark</color>
-    <color name="header_text">#FFFFFF</color>
-    <color name="header_background">@color/header_background_dark</color>
+    <!-- Dark mode specific overrides -->
+    <color name="primary">#9D2649</color>                <!-- Brighter Burgundy -->
+    <color name="primary_variant">#7D1935</color>        <!-- Burgundy -->
+    <color name="secondary">#F1C232</color>              <!-- Brighter Gold -->
+    <!-- Add these to your existing values-night/colors.xml -->
+    <color name="text_primary">@color/text_primary_dark</color>  <!-- This will use the white color -->
+    <color name="text_secondary">@color/text_secondary_dark</color>
 
-    <color name="search_text_color">#000000</color>
-    <color name="search_hint_color">#757575</color>
-    <color name="search_background_color">#FFFFFF</color>
+    <!-- Also add this for the score background -->
+    <color name="score_background">#3D3D3D</color>
+    <color name="colorPrimary">#9D2649</color>           <!-- Brighter Burgundy -->
+    <color name="colorPrimaryDark">#7D1935</color>       <!-- Burgundy -->
+    <color name="colorAccent">#F1C232</color>            <!-- Brighter Gold -->
+
+    
+    <color name="card_background">@color/card_background_dark</color>
+    <color name="home_background">@color/background_dark</color>
+    <color name="search_text_color">@color/white</color>
+    <color name="search_hint_color">#B0B0B0</color>
+    <color name="search_background_color">#2D2D2D</color>
+    <color name="header_text">@color/white</color>
+    <!-- Navigation bar colors for dark mode -->
+    <color name="nav_background">@color/background_dark</color>
+    <color name="nav_item_selected">@color/primary</color>
+    <color name="nav_item_unselected">@color/text_secondary_dark</color>
 </resources>

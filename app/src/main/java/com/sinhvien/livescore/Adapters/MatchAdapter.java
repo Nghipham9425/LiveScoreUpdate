@@ -1,6 +1,7 @@
 package com.sinhvien.livescore.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -9,8 +10,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.*;
+import com.sinhvien.livescore.Activities.MatchDetailsActivity;
 import com.sinhvien.livescore.Models.Match;
+import com.sinhvien.livescore.Models.MatchNotification;
 import com.sinhvien.livescore.R;
+import com.sinhvien.livescore.Utils.NotificationHelper;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
@@ -64,6 +71,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         holder.tvAwayTeam.setText(match.getAwayTeam().getShortName() != null ? match.getAwayTeam().getShortName() : match.getAwayTeam().getName());
         holder.tvTime.setText(match.getFormattedTime());
 
+
         Glide.with(context).load(match.getHomeTeam().getCrest()).into(holder.ivHomeTeam);
         Glide.with(context).load(match.getAwayTeam().getCrest()).into(holder.ivAwayTeam);
 
@@ -98,6 +106,74 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             } else {
                 addFavorite(match, holder);
             }
+
+        });
+        ImageView ivNotification = holder.itemView.findViewById(R.id.ivNotification);
+
+// Lấy match ID để kiểm tra thông báo
+        String matchId = match.getMatchId();
+
+// Kiểm tra xem trận đấu đã được đặt thông báo chưa
+        boolean isScheduled = NotificationHelper.isMatchScheduled(context, matchId);
+
+// Cập nhật icon thông báo tương ứng
+        ivNotification.setImageResource(isScheduled ?
+                R.drawable.ic_notification_on : R.drawable.ic_notification_off);
+
+// Xử lý khi nhấn vào icon chuông
+        ivNotification.setOnClickListener(v -> {
+            if (isScheduled) {
+                // Hủy thông báo
+                MatchNotification notification = new MatchNotification();
+                notification.setId(matchId);
+                NotificationHelper.cancelNotification(context, notification);
+
+                // Cập nhật giao diện
+                ivNotification.setImageResource(R.drawable.ic_notification_off);
+                Toast.makeText(context, "Đã hủy thông báo trận đấu", Toast.LENGTH_SHORT).show();
+            } else {
+                // Đặt thông báo mới
+                String homeTeam = match.getHomeTeam().getName();
+                String awayTeam = match.getAwayTeam().getName();
+                String competition = match.getCompetition();
+
+                // Chuyển đổi thời gian trận đấu
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                long matchTimeMillis = 0;
+                try {
+                    Date matchDate = sdf.parse(match.getMatchTime());
+                    matchTimeMillis = matchDate.getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                // Chỉ tiếp tục nếu chuyển đổi thời gian thành công
+                if (matchTimeMillis > 0) {
+                    // Tạo đối tượng thông báo
+                    MatchNotification notification = new MatchNotification(
+                            matchId,
+                            homeTeam,
+                            awayTeam,
+                            competition,
+                            matchTimeMillis
+                    );
+
+                    // Đặt lịch thông báo
+                    NotificationHelper.scheduleNotification(context, notification);
+
+                    // Cập nhật giao diện
+                    ivNotification.setImageResource(R.drawable.ic_notification_on);
+                    Toast.makeText(context, "Sẽ thông báo trước khi trận đấu bắt đầu", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Không thể đặt thông báo, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MatchDetailsActivity.class);
+            intent.putExtra("match_id", match.getMatchId());
+            context.startActivity(intent);
         });
     }
     private void addFavorite(Match match, MatchViewHolder holder) {

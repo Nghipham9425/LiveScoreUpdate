@@ -1,5 +1,5 @@
 <resources>
-    <!-- Các màu cơ bản -->
+    <!-- Basic colors -->
     <color name="white">#FFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="blue">#0000FF</color>
@@ -10,19 +10,21 @@
     <color name="error">#F44336</color>
     <color name="light_gray">#D3D3D3</color>
     <color name="status_default">#E0E0E0</color>
+    <color name="dark_red">#780000</color>
+    <color name="bright_red">#C1121F</color>
+    <color name="light_cream">#FDF0D5</color>
+    <color name="navy_blue">#003049</color>
+    <color name="lightblue">#669BBC</color>
+    <color name="strong_pink">#c9184a</color>
 
-    <!-- Màu chủ đạo -->
-    <color name="primary">#3D5AFE</color>
-    <color name="primary_variant">#0039CB</color>
-    <color name="secondary">#FF4081</color>
-    <color name="primary_dark">#00796B</color>
 
-    <!-- Màu giao diện -->
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 
-    <!-- Màu nền sáng & tối -->
+    <!-- Interface Colors -->
+    <color name="colorPrimary">#7D1935</color>      <!-- Burgundy -->
+    <color name="colorPrimaryDark">#4E0923</color>  <!-- Darker Burgundy -->
+    <color name="colorAccent">#DAA520</color>       <!-- Gold -->
+
+    <!-- Light & Dark Background Colors -->
     <color name="background_light">#F8F9FA</color>
     <color name="background_dark">#121212</color>
     <color name="surface_light">#F5F5F5</color>
@@ -31,57 +33,66 @@
     <color name="card_background_dark">#2D2D2D</color>
     <color name="card_background">@color/white</color>
 
-    <!-- Màu văn bản -->
+    <!-- Text Colors -->
     <color name="text_primary">#212529</color>
     <color name="text_secondary">#495057</color>
     <color name="text_primary_dark">#FFFFFF</color>
     <color name="text_secondary_dark">#B0B0B0</color>
 
-    <!-- Màu chủ đạo cho dark mode -->
-    <color name="primary_dark_mode">#3F51B5</color>
-    <color name="primary_dark_dark_mode">#303F9F</color>
-    <color name="accent_dark_mode">#FF4081</color>
-    <color name="primary_variant_dark_mode">#0D47A1</color>
-    <color name="secondary_dark_mode">#FF80AB</color>
+    <!-- Dark Mode Primary Colors -->
+    <color name="primary_dark_mode">#9D2649</color>        <!-- Brighter Burgundy for dark mode -->
+    <color name="primary_dark_dark_mode">#7D1935</color>   <!-- Burgundy -->
+    <color name="accent_dark_mode">#F1C232</color>         <!-- Brighter Gold -->
+    <color name="primary_variant_dark_mode">#4E0923</color><!-- Darker Burgundy -->
+    <color name="secondary_dark_mode">#F1C232</color>      <!-- Brighter Gold -->
 
-    <color name="status_selected">#3D5AFE</color>
-    <color name="status_pressed">#303F9F</color>
+    <color name="status_selected">#7D1935</color>          <!-- Burgundy -->
+    <color name="status_pressed">#4E0923</color>           <!-- Darker Burgundy -->
 
-    <!-- Colors for Material Components theme -->
+    <!-- Material Components Colors -->
     <color name="on_primary">#FFFFFF</color>
     <color name="on_primary_dark">#FFFFFF</color>
     <color name="on_background_light">#212529</color>
     <color name="on_background_dark">#FFFFFF</color>
     <color name="on_surface_light">#212529</color>
     <color name="on_surface_dark">#FFFFFF</color>
-
+    <color name="modern_text_secondary">#757575</color>
     <color name="header_background_dark">#1A1A1A</color>
     <color name="header_background">#E0E0E0</color>
     <color name="text_color_regular">#000000</color>
     <color name="header_text">#000000</color>
 
-    <color name="new_primary">#1976D2</color>
-    <color name="new_primary_dark">#0D47A1</color>
-    <color name="new_accent">#FF4081</color>
-    <color name="new_accent_dark">#C2185B</color>
+    <color name="new_primary">#7D1935</color>              <!-- Burgundy -->
+    <color name="new_primary_dark">#4E0923</color>         <!-- Darker Burgundy -->
+    <color name="new_accent">#DAA520</color>               <!-- Gold -->
+    <color name="new_accent_dark">#B8860B</color>          <!-- Dark Gold -->
     <color name="new_background">#F5F7FA</color>
     <color name="input_background">#F9FAFC</color>
     <color name="divider">#E0E0E0</color>
     <color name="card_stroke">#EEEEEE</color>
 
-    <!-- Modern colors -->
-    <color name="modern_primary">#4361EE</color>
-    <color name="modern_primary_dark">#3A0CA3</color>
-    <color name="modern_secondary">#F72585</color>
+    <!-- Modern colors - Burgundy & Gold Theme -->
+    <color name="modern_primary">#7D1935</color>           <!-- Burgundy -->
+    <color name="modern_primary_dark">#4E0923</color>      <!-- Darker Burgundy -->
+    <color name="modern_secondary">#DAA520</color>         <!-- Gold -->
     <color name="modern_background">#F8F9FC</color>
     <color name="modern_surface">#FFFFFF</color>
     <color name="modern_text_primary">#2B2D42</color>
-    <color name="modern_text_secondary">#6C757D</color>
-    <color name="modern_accent">#4CC9F0</color>
+    <color name="modern_accent">#B8860B</color>            <!-- Dark Gold -->
     <color name="modern_error">#E63946</color>
     <color name="modern_card_stroke">#E9ECEF</color>
     <color name="modern_divider">#DEE2E6</color>
 
+
+    <!-- For burgundy theme -->
+    <color name="primary_light">#C1506F</color>    <!-- Light Burgundy -->
+    <color name="primary">#7D1935</color>          <!-- Deep Burgundy -->
+    <color name="primary_dark">#4E0923</color>     <!-- Dark Burgundy -->
+    <color name="secondary">#DAA520</color>        <!-- Gold -->
+
+
+    
+    <color name="nav_background">@color/white</color>
     <color name="home_background">@color/white</color>
     <color name="search_text_color">#000000</color>
     <color name="search_hint_color">#757575</color>

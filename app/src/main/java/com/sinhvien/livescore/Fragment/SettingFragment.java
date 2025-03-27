@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.sinhvien.livescore.Activities.LoginActivity;
+import com.sinhvien.livescore.Activities.NotificationsActivity;
 import com.sinhvien.livescore.Activities.UserInforActivity;
 import com.sinhvien.livescore.R;
 import com.sinhvien.livescore.Activities.RegisterActivity;
@@ -89,6 +90,10 @@ public class SettingFragment extends Fragment {
 
         btnLogin.setOnClickListener(v -> startActivity(new Intent(getActivity(), LoginActivity.class)));
         btnJoinNow.setOnClickListener(v -> startActivity(new Intent(getActivity(), RegisterActivity.class)));
+
+        btnNotifications.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), NotificationsActivity.class));
+        });
 
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
