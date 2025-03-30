@@ -142,7 +142,6 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginBottom="24dp">
-                android:textColor="@color/text_primary"
 
                 <!-- Instagram Icon -->
                 <ImageView
@@ -168,11 +167,11 @@
 
                 <!-- X (Twitter) Icon -->
                 <ImageView
-                    android:id="@+id/imgTwitter"
+                    android:id="@+id/imgYoutbe"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:contentDescription="X"
-                    android:src="@drawable/x_ic"
+                    android:contentDescription="Youtube"
+                    android:src="@drawable/youtube_ic"
                     android:clickable="true"
                     android:focusable="true" />
             </LinearLayout>

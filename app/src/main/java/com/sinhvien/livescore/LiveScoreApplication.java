@@ -5,13 +5,23 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
 public class LiveScoreApplication extends Application {
+    private static final String TAG = "LiveScoreApplication";
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Initialize Firebase
+        initializeFirebase();
 
         // Tạo notification channel cho Android 8.0+
         createNotificationChannel();
@@ -24,6 +34,23 @@ public class LiveScoreApplication extends Application {
         AppCompatDelegate.setDefaultNightMode(
                 isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );
+    }
+
+    private void initializeFirebase() {
+        try {
+            // Initialize Firebase
+            FirebaseApp.initializeApp(this);
+
+            // Configure Firestore
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setPersistenceEnabled(true)
+                    .build();
+            FirebaseFirestore.getInstance().setFirestoreSettings(settings);
+
+            Log.d(TAG, "Firebase initialized successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing Firebase", e);
+        }
     }
 
     private void createNotificationChannel() {

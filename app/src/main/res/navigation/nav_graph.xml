@@ -12,13 +12,14 @@
         android:id="@+id/navigation_standings"
         android:name="com.sinhvien.livescore.Fragment.StandingsFragment"
         android:label="Bảng Xếp Hạng" />
-
-
     <fragment
-       android:id="@+id/navigation_favorite"
-    android:name="com.sinhvien.livescore.Fragment.FavoriteFragment"
-    android:label="Favorite" />
-
+        android:id="@+id/navigation_news"
+        android:name="com.sinhvien.livescore.Fragment.NewsFragment"
+        android:label="Tin Tức" />
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.sinhvien.livescore.Fragment.FavoriteFragment"
+        android:label="Favorite" />
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.sinhvien.livescore.Fragment.SettingFragment"

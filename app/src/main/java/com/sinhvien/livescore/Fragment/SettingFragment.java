@@ -3,6 +3,7 @@ package com.sinhvien.livescore.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,9 @@ public class SettingFragment extends Fragment {
     private ImageView imgThemeIcon;
     private SharedPreferences sharedPrefs;
 
+    // Social media icons
+    private ImageView imgInstagram, imgFacebook, imgYoutbe;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_setting, container, false);
@@ -61,6 +65,16 @@ public class SettingFragment extends Fragment {
         darkModeToggle = view.findViewById(R.id.darkModeToggle);
         switchDarkMode = view.findViewById(R.id.switchDarkMode);
         imgThemeIcon = view.findViewById(R.id.imgThemeIcon);
+
+        // Initialize social media icons
+        imgInstagram = view.findViewById(R.id.imgInstagram);
+        imgFacebook = view.findViewById(R.id.imgFacebook);
+        imgYoutbe = view.findViewById(R.id.imgYoutbe);
+
+        // Set click listeners for social media icons
+        imgInstagram.setOnClickListener(v -> openUrl("https://www.instagram.com/huflit.official"));
+        imgFacebook.setOnClickListener(v -> openUrl("https://www.facebook.com/huflit.edu.vn"));
+        imgYoutbe.setOnClickListener(v -> openUrl("https://www.youtube.com/@huflitofficial2711"));
 
         // Initialize shared preferences
         sharedPrefs = requireActivity().getSharedPreferences("app_settings", Context.MODE_PRIVATE);
@@ -104,6 +118,13 @@ public class SettingFragment extends Fragment {
             Intent intent = new Intent(getActivity(), UserInforActivity.class);
             startActivity(intent);
         });
+    }
+
+    // Helper method to open URLs
+    private void openUrl(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     @Override

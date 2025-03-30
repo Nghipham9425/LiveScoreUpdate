@@ -17,7 +17,7 @@
         android:text="Trận đấu yêu thích"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/primary"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         app:layout_constraintTop_toTopOf="parent"

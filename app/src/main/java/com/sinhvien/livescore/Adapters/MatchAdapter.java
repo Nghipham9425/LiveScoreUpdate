@@ -27,6 +27,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     private Set<String> favoriteMatches = new HashSet<>();
     private FirebaseFirestore db;
     private String uid; // ID người dùng
+    private Map<String, String> competitionNames; // Map for competition names
 
     public MatchAdapter(Context context, List<Match> matches, String uid) {
         this.context = context;
@@ -35,10 +36,33 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         this.db = FirebaseFirestore.getInstance();
         this.uid = uid;
 
+        // Initialize competition names
+        initCompetitionNames();
+
         // Chỉ tải favorites nếu đã đăng nhập
         if (uid != null && !uid.isEmpty()) {
             loadFavoritesFromFirestore();
         }
+    }
+
+    private void initCompetitionNames() {
+        competitionNames = new HashMap<>();
+        competitionNames.put("PL", "Premier League");
+        competitionNames.put("CL", "UEFA Champions League");
+        competitionNames.put("BL1", "Bundesliga");
+        competitionNames.put("SA", "Serie A");
+        competitionNames.put("PD", "La Liga");
+        competitionNames.put("FL1", "Ligue 1");
+        competitionNames.put("EC", "European Championship");
+        competitionNames.put("WC", "FIFA World Cup");
+        competitionNames.put("ELC", "Championship");
+    }
+
+    private String getCompetitionFullName(String code) {
+        if (competitionNames.containsKey(code)) {
+            return competitionNames.get(code);
+        }
+        return code; // Return the original code if not found in mapping
     }
 
     private void loadFavoritesFromFirestore() {
@@ -65,12 +89,11 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
         Match match = filteredList.get(position);
 
-        holder.tvCompetition.setText(match.getCompetition());
+        holder.tvCompetition.setText(getCompetitionFullName(match.getCompetition()));
         holder.tvScore.setText(match.getScore() != null ? match.getScore() : "-");
         holder.tvHomeTeam.setText(match.getHomeTeam().getShortName() != null ? match.getHomeTeam().getShortName() : match.getHomeTeam().getName());
         holder.tvAwayTeam.setText(match.getAwayTeam().getShortName() != null ? match.getAwayTeam().getShortName() : match.getAwayTeam().getName());
         holder.tvTime.setText(match.getFormattedTime());
-
 
         Glide.with(context).load(match.getHomeTeam().getCrest()).into(holder.ivHomeTeam);
         Glide.with(context).load(match.getAwayTeam().getCrest()).into(holder.ivAwayTeam);
@@ -106,21 +129,21 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             } else {
                 addFavorite(match, holder);
             }
-
         });
+
         ImageView ivNotification = holder.itemView.findViewById(R.id.ivNotification);
 
-// Lấy match ID để kiểm tra thông báo
+        // Lấy match ID để kiểm tra thông báo
         String matchId = match.getMatchId();
 
-// Kiểm tra xem trận đấu đã được đặt thông báo chưa
+        // Kiểm tra xem trận đấu đã được đặt thông báo chưa
         boolean isScheduled = NotificationHelper.isMatchScheduled(context, matchId);
 
-// Cập nhật icon thông báo tương ứng
+        // Cập nhật icon thông báo tương ứng
         ivNotification.setImageResource(isScheduled ?
                 R.drawable.ic_notification_on : R.drawable.ic_notification_off);
 
-// Xử lý khi nhấn vào icon chuông
+        // Xử lý khi nhấn vào icon chuông
         ivNotification.setOnClickListener(v -> {
             if (isScheduled) {
                 // Hủy thông báo
@@ -135,7 +158,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
                 // Đặt thông báo mới
                 String homeTeam = match.getHomeTeam().getName();
                 String awayTeam = match.getAwayTeam().getName();
-                String competition = match.getCompetition();
+                String competition = getCompetitionFullName(match.getCompetition());
 
                 // Chuyển đổi thời gian trận đấu
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
@@ -170,12 +193,14 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
                 }
             }
         });
+
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, MatchDetailsActivity.class);
             intent.putExtra("match_id", match.getMatchId());
             context.startActivity(intent);
         });
     }
+
     private void addFavorite(Match match, MatchViewHolder holder) {
         db.collection("Users").document(uid).collection("favorites")
                 .document(match.getMatchId())
